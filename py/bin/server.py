@@ -1,14 +1,27 @@
 #!/usr/bin/env python
 
+from datetime import datetime
+import json
 import os
 from flask import (
     Flask,
     send_file,
 )
 
-import .store
+from ..src.store import (
+    scrape_and_record,
+    get_all_event_data,
+)
 
 EVENT_CACHE = {}
+
+
+def json_serial(obj):
+    """JSON serializer for objects not serializable by default json code"""
+
+    if isinstance(obj, (datetime)):
+        return obj.isoformat()
+    raise TypeError ("Type %s not serializable" % type(obj))
 
 
 def get_cached_event(key):
@@ -25,13 +38,13 @@ def get_cached_event(key):
 app = Flask(
     __name__,
     static_url_path='',
-    static_folder='../static',
+    static_folder='../../static',
 )
 
 
 @app.route('/')
 def index():
-    return send_file('../static/index.html')
+    return send_file('../../static/index.html')
 
 
 @app.route('/api/event/latest')
@@ -46,10 +59,15 @@ def get_event_by_id(event_id):
 
 @app.route('/api/scrape')
 def scrape_events():
-    store.scrape_and_record()
+    new_slugs = scrape_and_record()
     EVENT_CACHE.clear()
-    all_event_data = store.get_events()
-    return json.dumps(all_event_data)
+    return json.dumps(new_slugs)
+
+
+@app.route('/api/data')
+def get_data():
+    all_event_data = get_all_event_data()
+    return json.dumps(all_event_data, default=json_serial)
 
 
 def main():

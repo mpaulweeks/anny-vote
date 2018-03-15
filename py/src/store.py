@@ -16,22 +16,22 @@ def scrape_and_record():
         query = Event.select().where(Event.slug == es)
         if not query.exists():
             slugs_inserted.append(es)
-            event = Event.create(slug=es)
+            event = Event.create_from_slug(es)
             filmInfos = scrape_event(es)
             for index, filmInfo in enumerate(filmInfos):
                 Film.create_from_scraped_info(event, index, filmInfo)
     return slugs_inserted
 
 
-def get_events():
+def get_all_event_data():
     events = Event.select()
     films = Film.select()
-    s_events = sorted(events, key=lambda d: d.created_at, reverse=True)
-    s_films = sorted(films, key=lambda d: d.created_at, reverse=False)
+    s_events = sorted(events, key=lambda d: d.number, reverse=True)
+    s_films = sorted(films, key=lambda d: d.order, reverse=False)
     data = []
     for e in s_events:
         data.append({
             'event': e.to_dict(),
-            'films': [f.to_dict() for f in df if f.event_id == e.id],
+            'films': [f.to_dict() for f in s_films if f.event.id == e.id],
         })
     return data

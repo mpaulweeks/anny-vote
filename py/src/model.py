@@ -32,13 +32,22 @@ class BaseModel(Model):
 
 class Event(BaseModel):
     id = PrimaryKeyField()
+    number = IntegerField(unique=True)
     slug = CharField(unique=True)
     created_at = DateTimeField(default=datetime.datetime.utcnow)
+
+    @classmethod
+    def create_from_slug(cls, slug):
+        number = int(slug.split('screening')[-1])
+        return Event.create(
+            number=number,
+            slug=slug,
+        )
 
 
 class Film(BaseModel):
     id = PrimaryKeyField()
-    event_id = ForeignKeyField(Event, to_field='id')
+    event = ForeignKeyField(Event, to_field='id')
     order = IntegerField()
     name = CharField()
     description = TextField()
@@ -58,7 +67,7 @@ class Film(BaseModel):
 
 class Vote(BaseModel):
     id = PrimaryKeyField()
-    film_id = ForeignKeyField(Film, to_field='id')
+    film = ForeignKeyField(Film, to_field='id')
     user_id = CharField()
     liked = BooleanField()
     created_at = DateTimeField(default=datetime.datetime.utcnow)

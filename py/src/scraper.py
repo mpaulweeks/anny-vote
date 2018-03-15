@@ -4,16 +4,16 @@ from bs4 import BeautifulSoup
 
 
 class FilmInfo():
-    def __init__(self, name, description, img_url):
+    def __init__(self, name, description, image_url):
         self.name = name
         self.description = description
-        self.img_url = img_url
+        self.image_url = image_url
 
     def to_json(self):
         return {
             'name': self.name,
             'description': self.description,
-            'img_url': self.img_url,
+            'image_url': self.image_url,
         }
 
 
@@ -41,6 +41,7 @@ def scrape_event_slugs():
 
 
 def scrape_event(slug):
+    print('scraping event:', slug)
     url = 'http://www.animationnights.com/%s/' % slug
     req = requests.get(url)
 
@@ -55,8 +56,8 @@ def scrape_event(slug):
     for ft in film_titles:
         title = ft.get_text()
         description = ft.find_next('div').get_text()
-        img_url = ft.parent.find_next('a').get('href')
-        film = FilmInfo(title, description, img_url)
+        image_url = ft.parent.find_next('a').get('href')
+        film = FilmInfo(title, description, image_url)
         films.append(film)
 
     return films
