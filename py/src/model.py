@@ -23,13 +23,17 @@ class BaseModel(Model):
     class Meta:
         database = sqlite_db
 
+    def to_dict(self):
+        return model_to_dict(self)
+
     def to_json(self):
-        return json.dumps(model_to_dict(self))
+        return json.dumps(self.to_dict())
 
 
 class Event(BaseModel):
     id = PrimaryKeyField()
     slug = CharField(unique=True)
+    created_at = DateTimeField(default=datetime.datetime.utcnow)
 
 
 class Film(BaseModel):
@@ -39,6 +43,17 @@ class Film(BaseModel):
     name = CharField()
     description = TextField()
     image_url = TextField()
+    created_at = DateTimeField(default=datetime.datetime.utcnow)
+
+    @classmethod
+    def create_from_scraped_info(cls, event, index, filmInfo):
+        return Film.create(
+            event_id=event.id,
+            order=index,
+            name=filmInfo.name,
+            description=filmInfo.description,
+            image_url=filmInfo.image_url,
+        )
 
 
 class Vote(BaseModel):

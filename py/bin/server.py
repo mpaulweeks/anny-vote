@@ -6,6 +6,8 @@ from flask import (
     send_file,
 )
 
+import .store
+
 EVENT_CACHE = {}
 
 
@@ -44,8 +46,10 @@ def get_event_by_id(event_id):
 
 @app.route('/api/scrape')
 def scrape_events():
-    # todo scrape and insert into db
+    store.scrape_and_record()
     EVENT_CACHE.clear()
+    all_event_data = store.get_events()
+    return json.dumps(all_event_data)
 
 
 def main():

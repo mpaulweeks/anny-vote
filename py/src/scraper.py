@@ -4,20 +4,20 @@ from bs4 import BeautifulSoup
 
 
 class FilmInfo():
-    def __init__(self, name, description, imgUrl):
+    def __init__(self, name, description, img_url):
         self.name = name
         self.description = description
-        self.imgUrl = imgUrl
+        self.img_url = img_url
 
     def to_json(self):
         return {
             'name': self.name,
             'description': self.description,
-            'imgUrl': self.imgUrl,
+            'img_url': self.img_url,
         }
 
 
-def scrape_event_urls():
+def scrape_event_slugs():
     url = 'http://www.animationnights.com/events-2/'
     req = requests.get(url)
 
@@ -27,14 +27,17 @@ def scrape_event_urls():
 
     soup = BeautifulSoup(req.text, 'html.parser')
 
-    event_urls = []
+    event_slugs = []
     event_links = soup.find_all('span', {'class': 'mk-button--text'})
     for el in event_links:
         url = el.parent.get('href')
-        if 'www.animationnights.com' in url:
-            event_urls.append(url)
-
-    return event_urls
+        prefix = 'www.animationnights.com/'
+        if prefix in url:
+            slug = url.split(prefix)[-1]
+            if slug[-1] == '/':
+                slug = slug[0:-1]
+            event_slugs.append(slug)
+    return event_slugs
 
 
 def scrape_event(slug):
@@ -52,8 +55,8 @@ def scrape_event(slug):
     for ft in film_titles:
         title = ft.get_text()
         description = ft.find_next('div').get_text()
-        imgUrl = ft.parent.find_next('a').get('href')
-        film = FilmInfo(title, description, imgUrl)
+        img_url = ft.parent.find_next('a').get('href')
+        film = FilmInfo(title, description, img_url)
         films.append(film)
 
     return films
@@ -63,4 +66,4 @@ if __name__ == '__main__':
     # scrape_event('screening30')
     for f in scrape_event('screening31'):
         print(f.to_json())
-    print(scrape_event_urls())
+    print(scrape_event_slugs())
