@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Row = styled.div`
   max-width: 400px;
-  margin: 10px auto;
+  margin: 9px auto;
   padding: 6px 9px;
   & * {
     padding: 3px 0px;

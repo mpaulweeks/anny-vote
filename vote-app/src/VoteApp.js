@@ -7,7 +7,7 @@ import VoteFilm from './VoteFilm'
 
 
 const Container = styled.div`
-  padding: 5px;
+  padding: 9px;
   background-color: #B0B0B0;
 `;
 
