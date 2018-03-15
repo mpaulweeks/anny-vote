@@ -24,7 +24,7 @@ class BaseModel(Model):
         database = sqlite_db
 
     def to_dict(self):
-        return model_to_dict(self)
+        return model_to_dict(self, max_depth=0)
 
     def to_json(self):
         return json.dumps(self.to_dict())

@@ -8,10 +8,7 @@ from flask import (
     send_file,
 )
 
-from ..src.store import (
-    scrape_and_record,
-    get_all_event_data,
-)
+from ..src import store
 
 EVENT_CACHE = {}
 
@@ -27,11 +24,10 @@ def json_serial(obj):
 def get_cached_event(key):
     if key not in EVENT_CACHE:
         if key == 'latest':
-            # todo special case
-            pass
+            event = store.get_latest_event()
+            EVENT_CACHE[key] = store.get_event_data_by_slug(event.slug)
         else:
-            # todo get event
-            EVENT_CACHE[key] = None
+            EVENT_CACHE[key] = store.get_event_data_by_slug(event.key)
     return EVENT_CACHE[key]
 
 
@@ -49,24 +45,24 @@ def index():
 
 @app.route('/api/event/latest')
 def get_latest_event():
-    return get_cached_event('latest')
+    return json.dumps(get_cached_event('latest'), default=json_serial)
 
 
 @app.route('/api/event/<event_id>')
 def get_event_by_id(event_id):
-    return get_cached_event(event_id)
+    return json.dumps(get_cached_event(event_id), default=json_serial)
 
 
 @app.route('/api/scrape')
 def scrape_events():
-    new_slugs = scrape_and_record()
+    new_slugs = store.scrape_and_record()
     EVENT_CACHE.clear()
     return json.dumps(new_slugs)
 
 
 @app.route('/api/data')
 def get_data():
-    all_event_data = get_all_event_data()
+    all_event_data = store.get_all_event_data()
     return json.dumps(all_event_data, default=json_serial)
 
 

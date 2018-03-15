@@ -9,6 +9,18 @@ from .scraper import (
 )
 
 
+def get_latest_event():
+    return Event.select().order_by(Event.number.desc()).get()
+
+def get_event_data_by_slug(slug):
+    event = Event.get(slug=slug)
+    films = Film.select().where(Film.event_id == event.id).order_by(Film.order)
+    return {
+        'event': event.to_dict(),
+        'films': [f.to_dict() for f in films],
+    }
+
+
 def scrape_and_record():
     event_slugs = scrape_event_slugs()
     slugs_inserted = []
