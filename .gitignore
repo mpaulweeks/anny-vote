@@ -102,4 +102,5 @@ ENV/
 
 
 # personal
+*.db
 *.pid
