@@ -1,28 +1,30 @@
 import React, { Component } from 'react';
 
+import API from './API'
+import Token from './Token'
+
 class VoteApp extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      filmData: null,
+      eventData: null,
+      voteData: null,
     }
   }
   componentDidMount() {
     const self = this
-    fetch('http://localhost:6200/api/event/latest')
-      .then(resp => resp.json())
-      .then(data => {
+    API.fetchLatestEvent().then(eventData => {
+      Token.ensure().then(voteData => {
         self.setState({
-          filmData: data,
+          eventData: eventData,
+          voteData: voteData,
         })
       })
-      .catch(err => {
-        console.log(err)
-      })
+    })
   }
   render() {
-    const { filmData } = this.state
-    if (!filmData){
+    const { eventData, voteData } = this.state
+    if (!eventData){
       return (
         <div>
           loading...
@@ -31,7 +33,8 @@ class VoteApp extends Component {
     }
     return (
       <div>
-        {JSON.stringify(filmData)}
+        {JSON.stringify(eventData)}
+        {JSON.stringify(voteData)}
       </div>
     );
   }

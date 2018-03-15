@@ -2,6 +2,7 @@
 from .model import (
     Event,
     Film,
+    Vote,
 )
 from .scraper import (
     scrape_event_slugs,
@@ -12,6 +13,7 @@ from .scraper import (
 def get_latest_event():
     return Event.select().order_by(Event.number.desc()).get()
 
+
 def get_event_data_by_number(number):
     event = Event.get(number=number)
     films = Film.select().where(Film.event_id == event.id).order_by(Film.order)
@@ -19,6 +21,11 @@ def get_event_data_by_number(number):
         'event': event.to_dict(),
         'films': [f.to_dict() for f in films],
     }
+
+
+def get_votes_by_token(token):
+    votes = Vote.select().where(user_id=token)
+    return [v.to_dict() for v in votes]
 
 
 def scrape_and_record():

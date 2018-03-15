@@ -62,6 +62,18 @@ def get_event_by_number(event_number):
     return json.dumps(event_data, default=json_serial)
 
 
+@app.route('/api/user/votes', methods=['POST'])
+def post_votes():
+    # todo figure out vote design
+    pass
+
+
+@app.route('/api/user/<token>/votes')
+def get_votes_by_token(token):
+    votes = store.get_votes_by_token(token)
+    return json.dumps(votes, default=json_serial)
+
+
 @app.route('/api/scrape')
 def scrape_events():
     new_slugs = store.scrape_and_record()
