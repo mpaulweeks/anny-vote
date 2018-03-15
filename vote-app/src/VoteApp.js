@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import API from './API'
 import Token from './Token'
 import VoteFilm from './VoteFilm'
 
-class VoteApp extends Component {
+class VoteApp extends React.Component {
   constructor(props) {
     super(props)
     this.token = new Token(props.cookies)
@@ -36,7 +36,7 @@ class VoteApp extends Component {
     return (
       <div>
         {eventData.films.map(f => (
-          <VoteFilm data={f} selected={voteData[f.id] || false}>
+          <VoteFilm key={f.id} data={f} selected={voteData[f.id] || false}>
           </VoteFilm>
         ))}
       </div>

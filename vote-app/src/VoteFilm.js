@@ -1,20 +1,54 @@
-import React, { Component } from 'react';
+import React from 'react';
+import styled from 'styled-components';
 
-class VoteFilm extends Component {
+
+const Row = styled.div`
+  max-width: 400px;
+  margin: 10px auto;
+  padding: 10px;
+  background-color: ${props => props.selected ? 'lightgreen' : 'salmon'};
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const Preview = styled.img`
+  display: block;
+  width: 100%;
+`;
+
+const Title = styled.div`
+  padding: 2px;
+  font-size: 18px;
+  font-weight: bold;
+`;
+
+const Description = styled.div`
+  padding: 2px;
+  font-size: 16px;
+`;
+
+class VoteFilm extends React.Component {
   constructor(props){
-    super(props)
-    this.state = this.props
+    super(props);
+    this.state = this.props;
+  }
+  onClick() {
+    this.setState({
+      selected: !this.state.selected,
+    });
   }
   render() {
-    const { data, selected } = this.state
+    const { data, selected } = this.state;
     return (
-      <div>
-        {selected ? 'YES' : 'NO'}
-        {data.name}
-        <img src={data.image_url} />
-      </div>
+      <Row selected={selected} onClick={() => this.onClick()}>
+        <Preview src={data.image_url} />
+        <Title>{data.name}</Title>
+        <Description>{data.description}</Description>
+      </Row>
     )
   }
 }
 
-export default VoteFilm
+export default VoteFilm;
