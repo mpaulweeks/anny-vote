@@ -6,6 +6,7 @@ import Token from './Token'
 class VoteApp extends Component {
   constructor(props) {
     super(props)
+    this.token = new Token(props.cookies)
     this.state = {
       eventData: null,
       voteData: null,
@@ -14,7 +15,7 @@ class VoteApp extends Component {
   componentDidMount() {
     const self = this
     API.fetchLatestEvent().then(eventData => {
-      Token.ensure().then(voteData => {
+      self.token.ensure().then(voteData => {
         self.setState({
           eventData: eventData,
           voteData: voteData,

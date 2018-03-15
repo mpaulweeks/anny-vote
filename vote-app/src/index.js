@@ -1,6 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import VoteApp from './VoteApp';
+import { withCookies, CookiesProvider } from 'react-cookie';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const render = App => {
+  const CookieApp = withCookies(App);
+  ReactDOM.render(
+    <CookiesProvider>
+      <CookieApp />
+    </CookiesProvider>,
+    document.getElementById('root')
+  );
+}
+render(VoteApp);
