@@ -20,12 +20,10 @@ class Token {
 
     if (token){
       return API.fetchOldVotes(token)
-        .then(votes => {
-          return {
-            token: token,
-            votes: votes,
-          }
-        })
+        .then(votes => ({
+          token: token,
+          votes: votes,
+        }))
     } else {
       return new Promise((resolve, reject) => {
         resolve({

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import API from './API'
 import Token from './Token'
+import VoteFilm from './VoteFilm'
 
 class VoteApp extends Component {
   constructor(props) {
@@ -34,11 +35,13 @@ class VoteApp extends Component {
     }
     return (
       <div>
-        {JSON.stringify(eventData)}
-        {JSON.stringify(voteData)}
+        {eventData.films.map(f => (
+          <VoteFilm data={f} selected={voteData[f.id] || false}>
+          </VoteFilm>
+        ))}
       </div>
     );
   }
 }
 
-export default VoteApp;
+export default VoteApp
