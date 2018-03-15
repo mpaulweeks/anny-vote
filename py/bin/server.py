@@ -4,6 +4,7 @@ from datetime import datetime
 import json
 import os
 from flask import (
+    abort,
     Flask,
     send_file,
 )
@@ -21,14 +22,14 @@ def json_serial(obj):
     raise TypeError ("Type %s not serializable" % type(obj))
 
 
-def get_cached_event(key):
-    if key not in EVENT_CACHE:
-        if key == 'latest':
+def get_cached_event(number):
+    if number not in EVENT_CACHE:
+        if number == 0:
             event = store.get_latest_event()
-            EVENT_CACHE[key] = store.get_event_data_by_slug(event.slug)
+            EVENT_CACHE[number] = store.get_event_data_by_number(event.number)
         else:
-            EVENT_CACHE[key] = store.get_event_data_by_slug(event.key)
-    return EVENT_CACHE[key]
+            EVENT_CACHE[number] = store.get_event_data_by_number(number)
+    return EVENT_CACHE[number]
 
 
 app = Flask(
@@ -45,12 +46,17 @@ def index():
 
 @app.route('/api/event/latest')
 def get_latest_event():
-    return json.dumps(get_cached_event('latest'), default=json_serial)
+    event_data = get_cached_event(0)
+    return json.dumps(event_data, default=json_serial)
 
 
-@app.route('/api/event/<event_id>')
-def get_event_by_id(event_id):
-    return json.dumps(get_cached_event(event_id), default=json_serial)
+@app.route('/api/event/<event_number>')
+def get_event_by_number(event_number):
+    number = int(str(event_number))
+    if number < 1:
+        abort(404)
+    event_data = get_cached_event(number)
+    return json.dumps(event_data, default=json_serial)
 
 
 @app.route('/api/scrape')
