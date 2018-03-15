@@ -8,6 +8,7 @@ from flask import (
     Flask,
     send_file,
 )
+from flask_cors import CORS
 
 from ..src import store
 
@@ -37,6 +38,8 @@ app = Flask(
     static_url_path='',
     static_folder='../../static',
 )
+# temp for local dev
+CORS(app)
 
 
 @app.route('/')
