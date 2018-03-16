@@ -10,7 +10,6 @@ const Loading = styled.div`
 
 const Container = styled.div`
   padding: 9px 9px;
-  background-color: #B0B0B0;
 `;
 
 const Row = styled.div`
@@ -22,14 +21,10 @@ const Row = styled.div`
   &:last-child {
     margin-bottom: 0px;
   }
-  padding: 6px 9px;
+  padding: 16px 18px;
   & * {
     padding: 3px 0px;
   }
-
-  border-style: solid;
-  border-color: ${props => props.selected ? 'lightgreen' : 'white'};
-  border-width: 9px 9px;
 
   background-color: white;
   &:hover {
@@ -40,6 +35,19 @@ const Row = styled.div`
   flex-direction: column;
   justify-content: center;
 `;
+
+const FilmRow = styled(Row)`
+  border-style: solid;
+  ${props => props.selected ? `
+    padding: 6px 9px;
+    border-color: lightgreen;
+    border-width: 9px;
+  ` : `
+    padding: 14px 17px;
+    border-color: black;
+    border-width: 1px;
+  `}
+`
 
 const CenterRow = styled(Row)`
   text-align: center;
@@ -122,6 +130,7 @@ export {
   Loading,
   Container,
   Row,
+  FilmRow,
   CenterRow,
   Logo,
   EventTitle,

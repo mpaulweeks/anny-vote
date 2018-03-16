@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  Row,
+  FilmRow,
   FilmPreview,
   FilmTitle,
   FilmDescription,
@@ -11,11 +11,11 @@ class VoteFilm extends React.Component {
   render() {
     const { data, selected, onClick } = this.props;
     return (
-      <Row selected={selected} onClick={onClick}>
+      <FilmRow selected={selected} onClick={onClick}>
         <FilmPreview src={data.image_url} />
         <FilmTitle>{data.name}</FilmTitle>
         <FilmDescription>{data.description}</FilmDescription>
-      </Row>
+      </FilmRow>
     )
   }
 }
