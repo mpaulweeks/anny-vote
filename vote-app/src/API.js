@@ -1,5 +1,9 @@
 
-const BASE = 'http://localhost:6200/api'
+const BASE = (
+  window.location.hostname === 'localhost' ?
+  'http://localhost:6200' :
+  ''
+) + '/api';
 
 function fetchOldVotes(eventId, token){
   return fetch(`${BASE}/event/${eventId}/user/${token}/votes`)
