@@ -9,11 +9,11 @@ const Row = styled.div`
     padding: 3px 0px;
   }
 
-  // border-style: solid;
-  // border-color: #909090;
-  // border-width: 2px;
+  border-style: solid;
+  border-color: ${props => props.selected ? 'lightgreen' : 'white'};
+  border-width: 9px 9px;
 
-  background-color: ${props => props.selected ? 'lightgreen' : 'white'};
+  background-color: white;
   &:hover {
     cursor: pointer;
   }
