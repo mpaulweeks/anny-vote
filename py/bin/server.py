@@ -7,7 +7,6 @@ from flask import (
     Flask,
     abort,
     request,
-    send_file,
 )
 from flask_cors import CORS
 
@@ -36,16 +35,9 @@ def get_cached_event(number):
 
 app = Flask(
     __name__,
-    static_url_path='',
-    static_folder='../../static',
 )
 # temp for local dev
 CORS(app)
-
-
-@app.route('/')
-def index():
-    return send_file('../../static/index.html')
 
 
 @app.route('/api/event/latest')
@@ -104,7 +96,7 @@ def main():
     app.run(
         # debug=True,
         host='localhost',
-        port=6200,
+        port=5400,
     )
 
 

@@ -74,10 +74,6 @@ def scrape_and_record():
     event_slugs = scrape_event_slugs()
     slugs_inserted = []
     for es in event_slugs:
-        # temp for quick testing
-        if es != 'screening31':
-            continue
-
         query = Event.select().where(Event.slug == es)
         if not query.exists():
             slugs_inserted.append(es)
