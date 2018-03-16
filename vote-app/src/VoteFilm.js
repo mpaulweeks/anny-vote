@@ -1,46 +1,20 @@
 import React from 'react';
-import styled from 'styled-components';
 
-const Row = styled.div`
-  max-width: 400px;
-  margin: 9px auto;
-  padding: 6px 9px;
-  & * {
-    padding: 3px 0px;
-  }
-
-  border-style: solid;
-  border-color: ${props => props.selected ? 'lightgreen' : 'white'};
-  border-width: 9px 9px;
-
-  background-color: white;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const Preview = styled.img`
-  display: block;
-  width: 100%;
-`;
-
-const Title = styled.div`
-  font-size: 18px;
-  font-weight: bold;
-`;
-
-const Description = styled.div`
-  font-size: 16px;
-`;
+import {
+  Row,
+  FilmPreview,
+  FilmTitle,
+  FilmDescription,
+} from './Component';
 
 class VoteFilm extends React.Component {
   render() {
     const { data, selected, onClick } = this.props;
     return (
       <Row selected={selected} onClick={onClick}>
-        <Preview src={data.image_url} />
-        <Title>{data.name}</Title>
-        <Description>{data.description}</Description>
+        <FilmPreview src={data.image_url} />
+        <FilmTitle>{data.name}</FilmTitle>
+        <FilmDescription>{data.description}</FilmDescription>
       </Row>
     )
   }

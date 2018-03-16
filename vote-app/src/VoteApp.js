@@ -5,11 +5,14 @@ import API from './API'
 import Token from './Token'
 import VoteFilm from './VoteFilm'
 
-
-const Container = styled.div`
-  padding: 9px;
-  background-color: #B0B0B0;
-`;
+import {
+  Container,
+  Logo,
+  EventTitle,
+  CenterRow,
+  Submit,
+  SaveMessage,
+} from './Component';
 
 class VoteApp extends React.Component {
   constructor(props) {
@@ -18,6 +21,8 @@ class VoteApp extends React.Component {
     this.state = {
       eventData: null,
       voteData: null,
+      voteLoading: false,
+      voteSuccess: false,
     }
   }
   componentDidMount() {
@@ -48,15 +53,24 @@ class VoteApp extends React.Component {
   }
   onSubmit() {
     const { eventData, token, voteData } = this.state;
-    this.tokenManager.saveToken(token);
+    const self = this
+    self.tokenManager.saveToken(token);
+    self.setState({
+      voteLoading: true,
+      voteSuccess: false,
+    });
     API.recordVotes(eventData.event.id, token, voteData)
       .then(data => {
         console.log(data);
+        self.setState({
+          voteLoading: false,
+          voteSuccess: true,
+        });
       })
   }
   render() {
     window.state = this.state;
-    const { eventData, voteData } = this.state;
+    const { eventData, voteData, voteLoading, voteSuccess } = this.state;
     if (!eventData){
       return (
         <div>
@@ -66,6 +80,19 @@ class VoteApp extends React.Component {
     }
     return (
       <Container>
+        <CenterRow>
+          <Logo src='anny.png' />
+          <EventTitle>
+            Screening #{eventData.event.number}
+          </EventTitle>
+          <SaveMessage>
+            <br/>
+            Click on all of the films you liked
+            <br/>
+            Then at the bottom, click Save.
+          </SaveMessage>
+        </CenterRow>
+
         {eventData.films.map(f => (
           <VoteFilm
             key={f.id}
@@ -75,9 +102,28 @@ class VoteApp extends React.Component {
           >
           </VoteFilm>
         ))}
-        <button onClick={() => this.onSubmit()}>
-          SUBMIT
-        </button>
+
+        <CenterRow>
+          {voteLoading && (
+            <SaveMessage>
+              saving votes...
+            </SaveMessage>
+          )}
+          {!voteLoading && (
+            <Submit onClick={() => this.onSubmit()}>
+              SAVE
+            </Submit>
+          )}
+          {voteSuccess && (
+            <SaveMessage>
+              <br/>
+              your vote was recorded!
+              <br/>
+              <br/>
+              feel free to change your votes later in the program and hit save again
+            </SaveMessage>
+          )}
+        </CenterRow>
       </Container>
     );
   }
