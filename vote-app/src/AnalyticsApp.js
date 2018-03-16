@@ -1,6 +1,24 @@
 import React from 'react';
 
-import API from './API'
+import API from './API';
+import VoteFilm from './VoteFilm';
+import {
+  CenterRow,
+  Logo,
+  InternalWarning,
+  EventTitle,
+  SaveMessage,
+  AnalyticsTable,
+} from './Component';
+
+
+function compareFilms(a,b) {
+  if (a.votes < b.votes)
+    return -1;
+  if (a.votes > b.votes)
+    return 1;
+  return 0;
+}
 
 class AnalyticsApp extends React.Component {
   constructor(props) {
@@ -19,13 +37,23 @@ class AnalyticsApp extends React.Component {
     })
   }
   processVotes(eventData, eventVoteData){
-    self.setState({
+    const films = [];
+    eventData.films.forEach(f => {
+      const votes = eventVoteData.votes[f.id] || 0;
+      films.push({
+        ...f,
+        votes: votes,
+      });
+    });
+    films.sort(compareFilms).reverse();
+    this.setState({
       eventData: eventData,
       eventVoteData: eventVoteData,
+      orderedFilms: films,
     });
   }
   render() {
-    const { eventData, eventVoteData } = this.state;
+    const { eventData, eventVoteData, orderedFilms } = this.state;
     if (!eventData){
       return (
         <div>
@@ -35,7 +63,34 @@ class AnalyticsApp extends React.Component {
     }
     return (
       <div>
-        {JSON.stringify(eventVoteData)}
+        <CenterRow>
+          <InternalWarning></InternalWarning>
+          <Logo src='anny.png' />
+          <EventTitle>
+            Screening #{eventData.event.number}
+          </EventTitle>
+          <SaveMessage>
+            total votes: {eventVoteData.count}
+          </SaveMessage>
+        </CenterRow>
+        <AnalyticsTable>
+          <thead>
+            <tr>
+              <th>votes</th>
+              <th>film</th>
+            </tr>
+          </thead>
+          <tbody>
+          {orderedFilms.map(f => (
+            <tr key={f.id}>
+              <td>{f.votes}</td>
+              <td>
+                <VoteFilm data={f}></VoteFilm>
+              </td>
+            </tr>
+          ))}
+          </tbody>
+        </AnalyticsTable>
       </div>
     )
   }

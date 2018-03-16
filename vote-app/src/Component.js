@@ -67,12 +67,35 @@ const FilmPreview = styled.img`
 `;
 
 const FilmTitle = styled.div`
+  text-align: left;
   font-size: 18px;
   font-weight: bold;
 `;
 
 const FilmDescription = styled.div`
+  text-align: left;
   font-size: 16px;
+`;
+
+const InternalWarning = styled.div`
+  font-size: 16px;
+  font-weight: bold;
+  color: red;
+  &::after {
+    content: "INTERNAL USE ONLY";
+  }
+`;
+
+const AnalyticsTable = styled.table`
+  margin: 0px auto;
+  border-collapse: collapse;
+  &, th, td {
+    text-align: center;
+    border: 1px solid black;
+  }
+  th {
+    padding: 5px;
+  }
 `;
 
 export {
@@ -86,4 +109,6 @@ export {
   FilmPreview,
   FilmTitle,
   FilmDescription,
+  InternalWarning,
+  AnalyticsTable,
 }
