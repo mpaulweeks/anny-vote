@@ -82,6 +82,9 @@ class VoteApp extends React.Component {
           <EventTitle>
             Screening #{eventData.event.number}
           </EventTitle>
+          <EventTitle>
+            Audience Poll
+          </EventTitle>
           <SaveMessage>
             <br/>
             Click on all of the films you liked
