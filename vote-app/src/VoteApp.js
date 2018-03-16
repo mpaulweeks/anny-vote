@@ -10,6 +10,7 @@ import {
   Logo,
   EventTitle,
   CenterRow,
+  FilmContainer,
   Submit,
   SaveMessage,
 } from './Component';
@@ -89,15 +90,17 @@ class VoteApp extends React.Component {
           </SaveMessage>
         </CenterRow>
 
-        {eventData.films.map(f => (
-          <VoteFilm
-            key={f.id}
-            data={f}
-            selected={voteData[f.id] || false}
-            onClick={() => this.onFilmToggle(f.id)}
-          >
-          </VoteFilm>
-        ))}
+        <FilmContainer>
+          {eventData.films.map(f => (
+            <VoteFilm
+              key={f.id}
+              data={f}
+              selected={voteData[f.id] || false}
+              onClick={() => this.onFilmToggle(f.id)}
+            >
+            </VoteFilm>
+          ))}
+        </FilmContainer>
 
         <CenterRow>
           {voteLoading && (

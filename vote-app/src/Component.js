@@ -35,6 +35,10 @@ const Row = styled.div`
   &:hover {
     cursor: pointer;
   }
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const CenterRow = styled(Row)`
@@ -67,6 +71,14 @@ const Submit = styled.button`
 
 const SaveMessage = styled.div`
   font-size: 16px;
+`;
+
+const FilmContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  margin-bottom: 9px;
 `;
 
 const FilmPreview = styled.img`
@@ -115,6 +127,7 @@ export {
   EventTitle,
   Submit,
   SaveMessage,
+  FilmContainer,
   FilmPreview,
   FilmTitle,
   FilmDescription,
