@@ -14,12 +14,12 @@ class Token {
   saveToken(token){
     this.cookies.set('token', token)
   }
-  ensure(){
+  ensure(eventId){
     const self = this
     const token = self.cookies.get('token')
 
     if (token){
-      return API.fetchOldVotes(token)
+      return API.fetchOldVotes(eventId, token)
         .then(votes => ({
           token: token,
           votes: votes,

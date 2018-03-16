@@ -14,7 +14,7 @@ const Container = styled.div`
 class VoteApp extends React.Component {
   constructor(props) {
     super(props)
-    this.token = new Token(props.cookies)
+    this.tokenManager = new Token(props.cookies)
     this.state = {
       eventData: null,
       voteData: null,
@@ -23,30 +23,40 @@ class VoteApp extends React.Component {
   componentDidMount() {
     const self = this
     API.fetchLatestEvent().then(eventData => {
-      self.token.ensure().then(voteData => {
+      self.tokenManager.ensure(eventData.event.id).then(tokenData => {
         self.setState({
+          token: tokenData.token,
           eventData: eventData,
-          voteData: voteData,
+          voteData: tokenData.votes,
         })
       })
     })
   }
   onFilmToggle(filmId) {
-    const { eventData, voteData } = this.state
-    const newVoteData = {}
+    const { eventData, voteData } = this.state;
+    const newVotes = {};
     eventData.films.forEach(f => {
       if (f.id === filmId){
-        newVoteData[f.id] = !voteData[f.id];
+        newVotes[f.id] = !voteData[f.id];
       } else {
-        newVoteData[f.id] = voteData[f.id];
+        newVotes[f.id] = voteData[f.id];
       }
     })
     this.setState({
-      voteData: newVoteData,
+      voteData: newVotes,
     })
   }
+  onSubmit() {
+    const { eventData, token, voteData } = this.state;
+    this.tokenManager.saveToken(token);
+    API.recordVotes(eventData.event.id, token, voteData)
+      .then(data => {
+        console.log(data);
+      })
+  }
   render() {
-    const { eventData, voteData } = this.state
+    window.state = this.state;
+    const { eventData, voteData } = this.state;
     if (!eventData){
       return (
         <div>
@@ -65,6 +75,9 @@ class VoteApp extends React.Component {
           >
           </VoteFilm>
         ))}
+        <button onClick={() => this.onSubmit()}>
+          SUBMIT
+        </button>
       </Container>
     );
   }

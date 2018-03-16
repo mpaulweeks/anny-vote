@@ -1,4 +1,6 @@
 
+import json
+
 from .model import (
     Event,
     Film,
@@ -23,9 +25,23 @@ def get_event_data_by_number(number):
     }
 
 
-def get_votes_by_token(token):
-    votes = Vote.select().where(user_id=token)
-    return [v.to_dict() for v in votes]
+def get_votes_by_event_and_token(event_id, token):
+    votes = (
+        Vote
+        .select()
+        .where(Vote.event_id == event_id, Vote.user_token == token)
+        .order_by(Vote.created_at.desc())
+        .get()
+    )
+    return json.loads(votes.blob)
+
+
+def record_votes(event_id, token, votes):
+    return Vote.create(
+        event_id=event_id,
+        user_token=token,
+        blob=json.dumps(votes),
+    ).to_dict()
 
 
 def scrape_and_record():

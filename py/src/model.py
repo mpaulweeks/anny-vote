@@ -67,9 +67,9 @@ class Film(BaseModel):
 
 class Vote(BaseModel):
     id = PrimaryKeyField()
-    film = ForeignKeyField(Film, to_field='id')
-    user_id = CharField()
-    liked = BooleanField()
+    event = ForeignKeyField(Event, to_field='id')
+    user_token = CharField()
+    blob = TextField()
     created_at = DateTimeField(default=datetime.datetime.utcnow)
 
 

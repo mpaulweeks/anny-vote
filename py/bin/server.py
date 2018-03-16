@@ -4,8 +4,9 @@ from datetime import datetime
 import json
 import os
 from flask import (
-    abort,
     Flask,
+    abort,
+    request,
     send_file,
 )
 from flask_cors import CORS
@@ -20,7 +21,7 @@ def json_serial(obj):
 
     if isinstance(obj, (datetime)):
         return obj.isoformat()
-    raise TypeError ("Type %s not serializable" % type(obj))
+    raise TypeError("Type %s not serializable" % type(obj))
 
 
 def get_cached_event(number):
@@ -53,7 +54,7 @@ def get_latest_event():
     return json.dumps(event_data, default=json_serial)
 
 
-@app.route('/api/event/<event_number>')
+@app.route('/api/event/number/<event_number>')
 def get_event_by_number(event_number):
     number = int(str(event_number))
     if number < 1:
@@ -62,15 +63,16 @@ def get_event_by_number(event_number):
     return json.dumps(event_data, default=json_serial)
 
 
-@app.route('/api/user/votes', methods=['POST'])
-def post_votes():
-    # todo figure out vote design
-    pass
+@app.route('/api/event/<event_id>/user/<token>/votes', methods=['POST'])
+def post_votes(event_id, token):
+    votes = request.get_json()['payload']
+    newVote = store.record_votes(event_id, token, votes)
+    return json.dumps(newVote, default=json_serial)
 
 
-@app.route('/api/user/<token>/votes')
-def get_votes_by_token(token):
-    votes = store.get_votes_by_token(token)
+@app.route('/api/event/<event_id>/user/<token>/votes')
+def get_votes_by_token(event_id, token):
+    votes = store.get_votes_by_event_and_token(event_id, token)
     return json.dumps(votes, default=json_serial)
 
 
