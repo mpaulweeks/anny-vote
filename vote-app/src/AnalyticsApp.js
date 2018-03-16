@@ -3,6 +3,7 @@ import React from 'react';
 import API from './API';
 import VoteFilm from './VoteFilm';
 import {
+  Loading,
   CenterRow,
   Logo,
   InternalWarning,
@@ -55,11 +56,7 @@ class AnalyticsApp extends React.Component {
   render() {
     const { eventData, eventVoteData, orderedFilms } = this.state;
     if (!eventData){
-      return (
-        <div>
-          loading...
-        </div>
-      )
+      return <Loading></Loading>;
     }
     return (
       <div>

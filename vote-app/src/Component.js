@@ -1,5 +1,13 @@
 import styled from 'styled-components';
 
+const Loading = styled.div`
+  text-align: center;
+  margin-top: 100px;
+  &::after {
+    content: "loading, please wait...";
+  }
+`;
+
 const Container = styled.div`
   padding: 9px 9px;
   background-color: #B0B0B0;
@@ -99,6 +107,7 @@ const AnalyticsTable = styled.table`
 `;
 
 export {
+  Loading,
   Container,
   Row,
   CenterRow,

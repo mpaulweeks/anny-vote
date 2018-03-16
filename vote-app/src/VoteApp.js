@@ -5,6 +5,7 @@ import Token from './Token'
 import VoteFilm from './VoteFilm'
 
 import {
+  Loading,
   Container,
   Logo,
   EventTitle,
@@ -71,11 +72,7 @@ class VoteApp extends React.Component {
     window.state = this.state;
     const { eventData, voteData, voteLoading, voteSuccess } = this.state;
     if (!eventData){
-      return (
-        <div>
-          loading...
-        </div>
-      )
+      return <Loading></Loading>;
     }
     return (
       <Container>
@@ -114,6 +111,7 @@ class VoteApp extends React.Component {
               <br/>
               <br/>
               feel free to change your votes later in the program and hit save again
+              <br/>
               <br/>
             </SaveMessage>
           )}
