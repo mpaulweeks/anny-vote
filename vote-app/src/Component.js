@@ -26,7 +26,6 @@ const Row = styled.div`
     padding: 3px 0px;
   }
 
-  background-color: white;
   &:hover {
     cursor: pointer;
   }
@@ -40,11 +39,11 @@ const FilmRow = styled(Row)`
   border-style: solid;
   ${props => props.selected ? `
     padding: 6px 9px;
-    border-color: lightgreen;
+    border-color: var(--selected);
     border-width: 9px;
   ` : `
     padding: 14px 17px;
-    border-color: black;
+    border-color: var(--foreground);
     border-width: 1px;
   `}
 `
@@ -68,9 +67,7 @@ const EventTitle = styled.div`
 
 const Submit = styled.button`
   font-size: 20px;
-  background-color: white;
-  color: black;
-  border-color: black;
+  border-color: var(--foreground);
   border-style: solid;
   border-width: 2px;
   padding: 6px 12px;
@@ -108,7 +105,7 @@ const FilmDescription = styled.div`
 const InternalWarning = styled.div`
   font-size: 16px;
   font-weight: bold;
-  color: red;
+  color: var(--warning);
   &::after {
     content: "INTERNAL USE ONLY";
   }
@@ -119,7 +116,7 @@ const AnalyticsTable = styled.table`
   border-collapse: collapse;
   &, th, td {
     text-align: center;
-    border: 1px solid black;
+    border: 1px solid var(--foreground);
   }
   th {
     padding: 5px;
