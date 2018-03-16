@@ -72,7 +72,16 @@ def post_votes(event_id, token):
 
 @app.route('/api/event/<event_id>/user/<token>/votes')
 def get_votes_by_token(event_id, token):
-    votes = store.get_votes_by_event_and_token(event_id, token)
+    try:
+        votes = store.get_votes_by_event_and_token(event_id, token)
+    except Exception:
+        abort(404)
+    return json.dumps(votes, default=json_serial)
+
+
+@app.route('/api/event/<event_id>/votes')
+def get_votes(event_id):
+    votes = store.get_votes_by_event(event_id)
     return json.dumps(votes, default=json_serial)
 
 

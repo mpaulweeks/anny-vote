@@ -19,11 +19,17 @@ class Token {
     const token = self.cookies.get('token')
 
     if (token){
-      return API.fetchOldVotes(eventId, token)
-        .then(votes => ({
-          token: token,
-          votes: votes,
-        }))
+      return new Promise((resolve, reject) => {
+        API.fetchOldVotes(eventId, token)
+          .then(votes => resolve({
+            token: token,
+            votes: votes,
+          }))
+          .catch(err => resolve({
+            token: token,
+            votes: {},
+          }))
+      });
     } else {
       return new Promise((resolve, reject) => {
         resolve({

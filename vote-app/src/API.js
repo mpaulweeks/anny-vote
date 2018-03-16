@@ -5,7 +5,8 @@ function fetchOldVotes(eventId, token){
   return fetch(`${BASE}/event/${eventId}/user/${token}/votes`)
     .then(resp => resp.json())
     .catch(err => {
-      console.log(err)
+      console.log(err);
+      return err;
     })
 }
 
@@ -13,7 +14,8 @@ function fetchLatestEvent(){
   return fetch(`${BASE}/event/latest`)
     .then(resp => resp.json())
     .catch(err => {
-      console.log(err)
+      console.log(err);
+      return err;
     })
 }
 
@@ -29,9 +31,18 @@ function recordVotes(eventId, token, voteData){
   }
   return fetch(`${BASE}/event/${eventId}/user/${token}/votes`, settings)
     .then(resp => resp.json())
-    .then(data => {
-      // todo save token as cookie
-      return data
+    .catch(err => {
+      console.log(err);
+      return err;
+    })
+}
+
+function fetchEventVotes(eventId){
+  return fetch(`${BASE}/event/${eventId}/votes`)
+    .then(resp => resp.json())
+    .catch(err => {
+      console.log(err);
+      return err;
     })
 }
 
@@ -39,4 +50,5 @@ export default {
   fetchOldVotes,
   fetchLatestEvent,
   recordVotes,
+  fetchEventVotes,
 }

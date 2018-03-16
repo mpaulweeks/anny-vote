@@ -1,5 +1,10 @@
 
+from collections import defaultdict
 import json
+
+from peewee import (
+    fn,
+)
 
 from .model import (
     Event,
@@ -26,14 +31,35 @@ def get_event_data_by_number(number):
 
 
 def get_votes_by_event_and_token(event_id, token):
-    votes = (
+    vote = (
         Vote
         .select()
         .where(Vote.event_id == event_id, Vote.user_token == token)
         .order_by(Vote.created_at.desc())
         .get()
     )
-    return json.loads(votes.blob)
+    return json.loads(vote.blob)
+
+
+def get_votes_by_event(event_id):
+    most_recent_votes = (
+        Vote
+        .select()
+        .group_by(Vote.user_token)
+        .having(Vote.created_at == fn.MAX(Vote.created_at))
+    )
+    count = 0
+    aggregate = defaultdict(int)
+    for vote in most_recent_votes:
+        count += 1
+        vote_data = json.loads(vote.blob)
+        for film_id, liked in vote_data.items():
+            if liked:
+                aggregate[film_id] += 1
+    return {
+        'count': count,
+        'votes': aggregate,
+    }
 
 
 def record_votes(event_id, token, votes):
@@ -48,6 +74,10 @@ def scrape_and_record():
     event_slugs = scrape_event_slugs()
     slugs_inserted = []
     for es in event_slugs:
+        # temp for quick testing
+        if es != 'screening31':
+            continue
+
         query = Event.select().where(Event.slug == es)
         if not query.exists():
             slugs_inserted.append(es)

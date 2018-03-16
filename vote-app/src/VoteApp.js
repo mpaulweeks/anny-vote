@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 
 import API from './API'
 import Token from './Token'
@@ -109,19 +108,19 @@ class VoteApp extends React.Component {
               saving votes...
             </SaveMessage>
           )}
-          {!voteLoading && (
-            <Submit onClick={() => this.onSubmit()}>
-              SAVE
-            </Submit>
-          )}
           {voteSuccess && (
             <SaveMessage>
-              <br/>
               your vote was recorded!
               <br/>
               <br/>
               feel free to change your votes later in the program and hit save again
+              <br/>
             </SaveMessage>
+          )}
+          {!voteLoading && (
+            <Submit onClick={() => this.onSubmit()}>
+              SAVE
+            </Submit>
           )}
         </CenterRow>
       </Container>
