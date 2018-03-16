@@ -67,6 +67,8 @@ const EventTitle = styled.div`
 
 const Submit = styled.button`
   font-size: 20px;
+  background-color: var(--background);
+  color: var(--foreground);
   border-color: var(--foreground);
   border-style: solid;
   border-width: 2px;
