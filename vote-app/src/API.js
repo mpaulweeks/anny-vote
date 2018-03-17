@@ -1,7 +1,7 @@
 
 const BASE = (
   window.location.hostname === 'localhost' ?
-  'http://localhost:6200' :
+  'http://localhost:5400' :
   ''
 ) + '/api';
 
