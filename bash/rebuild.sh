@@ -1,5 +1,3 @@
-#!/bin/sh
-
 ./bash/kill_anny_vote.sh
 git pull
 
