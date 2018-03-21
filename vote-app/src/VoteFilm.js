@@ -5,6 +5,7 @@ import {
   FilmPreview,
   FilmTitle,
   FilmDescription,
+  FilmSelected,
 } from './Component';
 
 class VoteFilm extends React.Component {
@@ -15,6 +16,7 @@ class VoteFilm extends React.Component {
         <FilmPreview src={data.image_url} />
         <FilmTitle>{data.name}</FilmTitle>
         <FilmDescription>{data.description}</FilmDescription>
+        { selected && <FilmSelected></FilmSelected> }
       </FilmRow>
     )
   }

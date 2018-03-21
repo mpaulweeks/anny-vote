@@ -36,6 +36,8 @@ const Row = styled.div`
 `;
 
 const FilmRow = styled(Row)`
+  position: relative;
+
   border-style: solid;
   ${props => props.selected ? `
     padding: 6px 9px;
@@ -104,6 +106,18 @@ const FilmDescription = styled.div`
   font-size: 16px;
 `;
 
+const FilmSelected = styled.div`
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 0px;
+
+  width: 50px;
+  height: 50px;
+  background-size: cover;
+  background-image: url('checkmark.png');
+`;
+
 const InternalWarning = styled.div`
   font-size: 16px;
   font-weight: bold;
@@ -139,6 +153,7 @@ export {
   FilmPreview,
   FilmTitle,
   FilmDescription,
+  FilmSelected,
   InternalWarning,
   AnalyticsTable,
 }

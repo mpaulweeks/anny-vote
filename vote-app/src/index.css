@@ -5,7 +5,7 @@ body {
 
   --foreground: rgb(0, 0, 0);
   --background: rgb(255, 255, 255);
-  --selected: rgb(144, 238, 144);
+  --selected: rgb(0, 158, 57);
   --warning: rgb(255, 0, 0);
 
   background-color: var(--background);
