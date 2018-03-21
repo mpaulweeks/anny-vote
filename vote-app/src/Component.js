@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 
 const Loading = styled.div`
@@ -66,6 +67,18 @@ const EventTitle = styled.div`
   font-size: 20px;
   font-weight: bold;
 `;
+
+class ScreeningTitle extends React.Component {
+  render() {
+    const { event } = this.props;
+    const url = `http://www.animationnights.com/${event.slug}/`;
+    return (
+      <EventTitle>
+        Screening <a href={url}>#{event.number}</a>
+      </EventTitle>
+    );
+  }
+}
 
 const Submit = styled.button`
   font-size: 20px;
@@ -146,6 +159,7 @@ export {
   FilmRow,
   CenterRow,
   Logo,
+  ScreeningTitle,
   EventTitle,
   Submit,
   SaveMessage,

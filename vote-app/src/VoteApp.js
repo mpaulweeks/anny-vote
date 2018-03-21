@@ -8,6 +8,7 @@ import {
   Loading,
   Container,
   Logo,
+  ScreeningTitle,
   EventTitle,
   CenterRow,
   FilmContainer,
@@ -79,12 +80,8 @@ class VoteApp extends React.Component {
       <Container>
         <CenterRow>
           <Logo src='anny.png' />
-          <EventTitle>
-            Screening #{eventData.event.number}
-          </EventTitle>
-          <EventTitle>
-            Audience Poll
-          </EventTitle>
+          <ScreeningTitle event={eventData.event}></ScreeningTitle>
+          <EventTitle>Audience Poll</EventTitle>
           <SaveMessage>
             <br/>
             Click on all of the films you liked

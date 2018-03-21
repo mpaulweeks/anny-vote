@@ -7,7 +7,7 @@ import {
   CenterRow,
   Logo,
   InternalWarning,
-  EventTitle,
+  ScreeningTitle,
   SaveMessage,
   AnalyticsTable,
 } from './Component';
@@ -66,9 +66,7 @@ class AnalyticsApp extends React.Component {
         <CenterRow>
           <InternalWarning></InternalWarning>
           <Logo src='anny.png' />
-          <EventTitle>
-            Screening #{eventData.event.number}
-          </EventTitle>
+          <ScreeningTitle event={eventData.event}></ScreeningTitle>
           <SaveMessage>
             Number of Participants: {eventVoteData.count}
           </SaveMessage>
