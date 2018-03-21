@@ -24,20 +24,16 @@ const Row = styled.div`
   }
   padding: 16px 18px;
 
-  &:hover {
-    cursor: pointer;
-  }
-
   display: flex;
   flex-direction: column;
   justify-content: center;
 `;
 
-const SubRow = styled.div`
-  padding: 3px 0px;
-`;
-
 const FilmRow = styled(Row)`
+  &:hover {
+    cursor: pointer;
+  }
+
   border-style: solid;
   ${props => props.selected ? `
     padding: 6px 9px;
@@ -55,6 +51,10 @@ const CenterRow = styled(Row)`
   & img {
     margin: 0px auto;
   }
+`;
+
+const SubRow = styled.div`
+  padding: 3px 0px;
 `;
 
 const Logo = styled.img`
@@ -88,6 +88,10 @@ const Submit = styled.button`
   border-width: 2px;
   padding: 6px 12px;
   box-shadow: 2px 2px;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const SaveMessage = styled.div`
