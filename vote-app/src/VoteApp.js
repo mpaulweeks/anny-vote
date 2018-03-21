@@ -94,7 +94,7 @@ class VoteApp extends React.Component {
         </CenterRow>
 
         <FilmContainer>
-          {eventData.films.map(f => (
+          {eventData.films.map(f => f.hide ? '' : (
             <VoteFilm
               key={f.id}
               data={f}
