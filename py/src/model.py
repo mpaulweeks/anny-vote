@@ -8,7 +8,6 @@ from peewee import (
     PrimaryKeyField,
     ForeignKeyField,
     IntegerField,
-    BooleanField,
     CharField,
     TextField,
     DateTimeField,
