@@ -23,9 +23,6 @@ const Row = styled.div`
     margin-bottom: 0px;
   }
   padding: 16px 18px;
-  & * {
-    padding: 3px 0px;
-  }
 
   &:hover {
     cursor: pointer;
@@ -36,9 +33,11 @@ const Row = styled.div`
   justify-content: center;
 `;
 
-const FilmRow = styled(Row)`
-  position: relative;
+const SubRow = styled.div`
+  padding: 3px 0px;
+`;
 
+const FilmRow = styled(Row)`
   border-style: solid;
   ${props => props.selected ? `
     padding: 6px 9px;
@@ -103,32 +102,50 @@ const FilmContainer = styled.div`
   margin-bottom: 9px;
 `;
 
-const FilmPreview = styled.img`
-  display: block;
+const FilmPreviewContainer = styled(SubRow)`
+  position: relative;
   width: 100%;
 `;
 
-const FilmTitle = styled.div`
-  text-align: left;
-  font-size: 18px;
-  font-weight: bold;
-`;
-
-const FilmDescription = styled.div`
-  text-align: left;
-  font-size: 16px;
+const FilmPreviewImage = styled.img`
+  display: block;
+  width: 100%;
+  height: auto;
 `;
 
 const FilmSelected = styled.div`
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 8px; /* +3 for SubRow padding */
+  right: 5px;
   padding: 0px;
 
   width: 50px;
   height: 50px;
   background-size: cover;
   background-image: url('checkmark.png');
+`;
+
+class FilmPreview extends React.Component {
+  render () {
+    const { src, selected } = this.props;
+    return (
+      <FilmPreviewContainer>
+        <FilmPreviewImage src={src} />
+        { selected && <FilmSelected></FilmSelected> }
+      </FilmPreviewContainer>
+    )
+  }
+}
+
+const FilmTitle = styled(SubRow)`
+  text-align: left;
+  font-size: 18px;
+  font-weight: bold;
+`;
+
+const FilmDescription = styled(SubRow)`
+  text-align: left;
+  font-size: 16px;
 `;
 
 const InternalWarning = styled.div`
