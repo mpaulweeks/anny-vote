@@ -57,10 +57,29 @@ const SubRow = styled.div`
   padding: 3px 0px;
 `;
 
-const Logo = styled.img`
+const LogoContainer = styled.div`
+  padding: 10px 0px;
+`;
+
+const LogoImage = styled.img`
   display: block;
   max-width: 300px;
 `;
+
+class Logo extends React.Component {
+  render() {
+    return (
+      <LogoContainer>
+        <a href='http://www.animationnights.com'>
+          <LogoImage src='anny.png' />
+        </a>
+        <div>
+          Animation Nights New York
+        </div>
+      </LogoContainer>
+    )
+  }
+}
 
 const EventTitle = styled.div`
   font-size: 20px;

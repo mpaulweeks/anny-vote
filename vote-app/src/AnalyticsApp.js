@@ -65,7 +65,7 @@ class AnalyticsApp extends React.Component {
       <div>
         <CenterRow>
           <InternalWarning></InternalWarning>
-          <Logo src='anny.png' />
+          <Logo />
           <ScreeningTitle event={eventData.event}></ScreeningTitle>
           <SaveMessage>
             Number of Participants: {eventVoteData.count}

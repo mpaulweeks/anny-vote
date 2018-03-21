@@ -79,7 +79,7 @@ class VoteApp extends React.Component {
     return (
       <Container>
         <CenterRow>
-          <Logo src='anny.png' />
+          <Logo />
           <ScreeningTitle event={eventData.event}></ScreeningTitle>
           <EventTitle>Audience Poll</EventTitle>
           <SaveMessage>
