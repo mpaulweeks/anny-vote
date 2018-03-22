@@ -5,7 +5,6 @@ import {
   FilmPreview,
   FilmTitle,
   FilmDescription,
-  FilmSelected,
 } from './Component';
 
 class VoteFilm extends React.Component {
