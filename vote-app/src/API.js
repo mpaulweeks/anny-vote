@@ -23,6 +23,25 @@ function fetchLatestEvent(){
     })
 }
 
+function fetchEvent(number){
+  return fetch(`${BASE}/event/number/${number}`)
+    .then(resp => resp.json())
+    .catch(err => {
+      console.log(err);
+      return err;
+    })
+}
+
+function fetchUrlEvent(){
+  const path = window.location.pathname;
+  if (path.includes('/event/')){
+    const number = path.split('/event/')[1].split('/')[0];
+    return fetchEvent(number);
+  } else {
+    return fetchLatestEvent();
+  }
+}
+
 function recordVotes(eventId, token, voteData){
   const settings = {
     method: 'POST',
@@ -52,7 +71,7 @@ function fetchEventVotes(eventId){
 
 export default {
   fetchOldVotes,
-  fetchLatestEvent,
+  fetchUrlEvent,
   recordVotes,
   fetchEventVotes,
 }

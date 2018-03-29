@@ -28,7 +28,7 @@ class VoteApp extends React.Component {
   }
   componentDidMount() {
     const self = this
-    API.fetchLatestEvent().then(eventData => {
+    API.fetchUrlEvent().then(eventData => {
       self.tokenManager.ensure(eventData.event.id).then(tokenData => {
         self.setState({
           token: tokenData.token,

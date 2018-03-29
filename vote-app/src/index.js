@@ -14,7 +14,8 @@ const render = App => {
     document.getElementById('root')
   );
 }
-if (window.location.pathname.includes('analytics')){
+const path = window.location.pathname;
+if (path.includes('analytics')){
   render(AnalyticsApp);
 } else {
   render(VoteApp);

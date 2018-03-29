@@ -31,7 +31,7 @@ class AnalyticsApp extends React.Component {
   }
   componentDidMount() {
     const self = this
-    API.fetchLatestEvent().then(eventData => {
+    API.fetchUrlEvent().then(eventData => {
       API.fetchEventVotes(eventData.event.id).then(eventVoteData => {
         self.processVotes(eventData, eventVoteData);
       })
