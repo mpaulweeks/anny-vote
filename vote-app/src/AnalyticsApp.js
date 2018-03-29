@@ -7,7 +7,7 @@ import {
   CenterRow,
   Logo,
   InternalWarning,
-  EventTitle,
+  ScreeningTitle,
   SaveMessage,
   AnalyticsTable,
 } from './Component';
@@ -26,7 +26,6 @@ class AnalyticsApp extends React.Component {
     super(props);
     this.state = {
       eventData: null,
-      eventVoteData: null,
     }
   }
   componentDidMount() {
@@ -39,35 +38,43 @@ class AnalyticsApp extends React.Component {
   }
   processVotes(eventData, eventVoteData){
     const films = [];
+    let totalVotes = 0;
     eventData.films.forEach(f => {
       const votes = eventVoteData.votes[f.id] || 0;
       films.push({
         ...f,
         votes: votes,
       });
+      totalVotes += votes;
     });
     films.sort(compareFilms).reverse();
     this.setState({
       eventData: eventData,
       eventVoteData: eventVoteData,
       orderedFilms: films,
+      totalVotes: totalVotes,
     });
   }
   render() {
-    const { eventData, eventVoteData, orderedFilms } = this.state;
+    const { eventData, eventVoteData, orderedFilms, totalVotes } = this.state;
     if (!eventData){
       return <Loading></Loading>;
     }
+    const avgVotes = (totalVotes / eventVoteData.count).toFixed(1);
     return (
       <div>
         <CenterRow>
           <InternalWarning></InternalWarning>
-          <Logo src='anny.png' />
-          <EventTitle>
-            Screening #{eventData.event.number}
-          </EventTitle>
+          <Logo />
+          <ScreeningTitle event={eventData.event}></ScreeningTitle>
           <SaveMessage>
-            total votes: {eventVoteData.count}
+            Number of Participants: {eventVoteData.count}
+          </SaveMessage>
+          <SaveMessage>
+            Total Votes: {totalVotes}
+          </SaveMessage>
+          <SaveMessage>
+            Average Votes Per User: {avgVotes}
           </SaveMessage>
         </CenterRow>
         <AnalyticsTable>

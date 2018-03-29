@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 
 const Loading = styled.div`
@@ -22,13 +23,6 @@ const Row = styled.div`
     margin-bottom: 0px;
   }
   padding: 16px 18px;
-  & * {
-    padding: 3px 0px;
-  }
-
-  &:hover {
-    cursor: pointer;
-  }
 
   display: flex;
   flex-direction: column;
@@ -36,6 +30,10 @@ const Row = styled.div`
 `;
 
 const FilmRow = styled(Row)`
+  &:hover {
+    cursor: pointer;
+  }
+
   border-style: solid;
   ${props => props.selected ? `
     padding: 6px 9px;
@@ -55,15 +53,50 @@ const CenterRow = styled(Row)`
   }
 `;
 
-const Logo = styled.img`
+const SubRow = styled.div`
+  padding: 3px 0px;
+`;
+
+const LogoContainer = styled.div`
+  padding: 10px 0px;
+`;
+
+const LogoImage = styled.img`
   display: block;
   max-width: 300px;
 `;
+
+class Logo extends React.Component {
+  render() {
+    return (
+      <LogoContainer>
+        <a href='http://www.animationnights.com'>
+          <LogoImage src='anny.png' />
+        </a>
+        <div>
+          Animation Nights New York
+        </div>
+      </LogoContainer>
+    )
+  }
+}
 
 const EventTitle = styled.div`
   font-size: 20px;
   font-weight: bold;
 `;
+
+class ScreeningTitle extends React.Component {
+  render() {
+    const { event } = this.props;
+    const url = `http://www.animationnights.com/${event.slug}/`;
+    return (
+      <EventTitle>
+        Screening <a href={url}>#{event.number}</a>
+      </EventTitle>
+    );
+  }
+}
 
 const Submit = styled.button`
   font-size: 20px;
@@ -74,6 +107,10 @@ const Submit = styled.button`
   border-width: 2px;
   padding: 6px 12px;
   box-shadow: 2px 2px;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const SaveMessage = styled.div`
@@ -88,18 +125,48 @@ const FilmContainer = styled.div`
   margin-bottom: 9px;
 `;
 
-const FilmPreview = styled.img`
-  display: block;
+const FilmPreviewContainer = styled(SubRow)`
+  position: relative;
   width: 100%;
 `;
 
-const FilmTitle = styled.div`
+const FilmPreviewImage = styled.img`
+  display: block;
+  width: 100%;
+  height: auto;
+`;
+
+const FilmSelected = styled.div`
+  position: absolute;
+  top: 8px; /* +3 for SubRow padding */
+  right: 5px;
+  padding: 0px;
+
+  width: 50px;
+  height: 50px;
+  background-size: cover;
+  background-image: url('checkmark.png');
+`;
+
+class FilmPreview extends React.Component {
+  render () {
+    const { src, selected } = this.props;
+    return (
+      <FilmPreviewContainer>
+        <FilmPreviewImage src={src} />
+        { selected && <FilmSelected></FilmSelected> }
+      </FilmPreviewContainer>
+    )
+  }
+}
+
+const FilmTitle = styled(SubRow)`
   text-align: left;
   font-size: 18px;
   font-weight: bold;
 `;
 
-const FilmDescription = styled.div`
+const FilmDescription = styled(SubRow)`
   text-align: left;
   font-size: 16px;
 `;
@@ -132,6 +199,7 @@ export {
   FilmRow,
   CenterRow,
   Logo,
+  ScreeningTitle,
   EventTitle,
   Submit,
   SaveMessage,
@@ -139,6 +207,7 @@ export {
   FilmPreview,
   FilmTitle,
   FilmDescription,
+  FilmSelected,
   InternalWarning,
   AnalyticsTable,
 }

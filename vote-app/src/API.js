@@ -6,7 +6,10 @@ const BASE = (
 ) + '/api';
 
 function fetchOldVotes(eventId, token){
-  return fetch(`${BASE}/event/${eventId}/user/${token}/votes`)
+  const settings = {
+    cache: "no-store",
+  };
+  return fetch(`${BASE}/event/${eventId}/user/${token}/votes`, settings)
     .then(resp => resp.json())
     .catch(err => {
       console.log(err);
@@ -15,7 +18,10 @@ function fetchOldVotes(eventId, token){
 }
 
 function fetchLatestEvent(){
-  return fetch(`${BASE}/event/latest`)
+  const settings = {
+    cache: "no-store",
+  };
+  return fetch(`${BASE}/event/latest`, settings)
     .then(resp => resp.json())
     .catch(err => {
       console.log(err);
@@ -44,6 +50,7 @@ function fetchUrlEvent(){
 
 function recordVotes(eventId, token, voteData){
   const settings = {
+    cache: "no-store",
     method: 'POST',
     headers: new Headers({
       "Content-Type": "application/json",
@@ -51,7 +58,7 @@ function recordVotes(eventId, token, voteData){
     body: JSON.stringify({
       payload: voteData,
     }),
-  }
+  };
   return fetch(`${BASE}/event/${eventId}/user/${token}/votes`, settings)
     .then(resp => resp.json())
     .catch(err => {
@@ -61,7 +68,10 @@ function recordVotes(eventId, token, voteData){
 }
 
 function fetchEventVotes(eventId){
-  return fetch(`${BASE}/event/${eventId}/votes`)
+  const settings = {
+    cache: "no-store",
+  };
+  return fetch(`${BASE}/event/${eventId}/votes`, settings)
     .then(resp => resp.json())
     .catch(err => {
       console.log(err);

@@ -12,7 +12,9 @@ class Token {
     )
   }
   saveToken(token){
-    this.cookies.set('token', token)
+    this.cookies.set('token', token, {
+      maxAge: 86400, // 1 day (in seconds)
+    })
   }
   ensure(eventId){
     const self = this

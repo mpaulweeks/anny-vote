@@ -8,7 +8,6 @@ from peewee import (
     PrimaryKeyField,
     ForeignKeyField,
     IntegerField,
-    BooleanField,
     CharField,
     TextField,
     DateTimeField,
@@ -53,6 +52,17 @@ class Film(BaseModel):
     description = TextField()
     image_url = TextField()
     created_at = DateTimeField(default=datetime.datetime.utcnow)
+
+    def is_vr(self):
+        return self.name.lower().startswith('vr selection:')
+
+    def hide(self):
+        return self.is_vr()
+
+    def to_dict(self):
+        model_dict = super(Film, self).to_dict()
+        model_dict['hide'] = self.hide()
+        return model_dict
 
     @classmethod
     def create_from_scraped_info(cls, event, index, filmInfo):
