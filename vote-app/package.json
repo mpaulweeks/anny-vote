@@ -2,7 +2,6 @@
   "name": "vote-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
   "dependencies": {
     "react": "^16.2.0",
     "react-cookie": "^2.1.4",
