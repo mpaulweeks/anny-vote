@@ -48,6 +48,15 @@ function fetchUrlEvent(){
   }
 }
 
+function fetchAllEvents(){
+  return fetch(`${BASE}/events`)
+    .then(resp => resp.json())
+    .catch(err => {
+      console.log(err);
+      return err;
+    })
+}
+
 function recordVotes(eventId, token, voteData){
   const settings = {
     cache: "no-store",
@@ -82,6 +91,7 @@ function fetchEventVotes(eventId){
 export default {
   fetchOldVotes,
   fetchUrlEvent,
+  fetchAllEvents,
   recordVotes,
   fetchEventVotes,
 }

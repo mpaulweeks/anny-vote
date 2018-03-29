@@ -23,6 +23,10 @@ def json_serial(obj):
     raise TypeError("Type %s not serializable" % type(obj))
 
 
+def to_json(obj):
+  return json.dumps(obj, default=json_serial)
+
+
 def get_cached_event(number):
     if number not in EVENT_CACHE:
         if number == 0:
@@ -43,7 +47,7 @@ CORS(app)
 @app.route('/api/event/latest')
 def get_latest_event():
     event_data = get_cached_event(0)
-    return json.dumps(event_data, default=json_serial)
+    return to_json(event_data)
 
 
 @app.route('/api/event/number/<event_number>')
@@ -52,14 +56,20 @@ def get_event_by_number(event_number):
     if number < 1:
         abort(404)
     event_data = get_cached_event(number)
-    return json.dumps(event_data, default=json_serial)
+    return to_json(event_data)
+
+
+@app.route('/api/events')
+def get_all_events():
+    events_data = store.get_all_events()
+    return to_json(events_data)
 
 
 @app.route('/api/event/<event_id>/user/<token>/votes', methods=['POST'])
 def post_votes(event_id, token):
     votes = request.get_json()['payload']
     newVote = store.record_votes(event_id, token, votes)
-    return json.dumps(newVote, default=json_serial)
+    return to_json(newVote)
 
 
 @app.route('/api/event/<event_id>/user/<token>/votes')
@@ -68,13 +78,13 @@ def get_votes_by_token(event_id, token):
         votes = store.get_votes_by_event_and_token(event_id, token)
     except Exception:
         abort(404)
-    return json.dumps(votes, default=json_serial)
+    return to_json(votes)
 
 
 @app.route('/api/event/<event_id>/votes')
 def get_votes(event_id):
     votes = store.get_votes_by_event(event_id)
-    return json.dumps(votes, default=json_serial)
+    return to_json(votes)
 
 
 @app.route('/api/scrape')
@@ -87,7 +97,7 @@ def scrape_events():
 @app.route('/api/data')
 def get_data():
     all_event_data = store.get_all_event_data()
-    return json.dumps(all_event_data, default=json_serial)
+    return to_json(all_event_data)
 
 
 def main():

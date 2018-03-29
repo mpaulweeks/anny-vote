@@ -192,6 +192,21 @@ const AnalyticsTable = styled.table`
   }
 `;
 
+const AdminEventRow = styled.div`
+  text-align: center;
+  padding: 5px;
+`;
+
+const AdminEventTitle = styled.div`
+  font-weight: bold;
+`;
+
+const AdminEventLinks = styled.div`
+  & a {
+    padding: 0px 5px;
+  }
+`;
+
 export {
   Loading,
   Container,
@@ -210,4 +225,7 @@ export {
   FilmSelected,
   InternalWarning,
   AnalyticsTable,
+  AdminEventRow,
+  AdminEventTitle,
+  AdminEventLinks,
 }
