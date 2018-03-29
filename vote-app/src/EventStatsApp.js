@@ -21,7 +21,7 @@ function compareFilms(a,b) {
   return 0;
 }
 
-class AnalyticsApp extends React.Component {
+class EventStatsApp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -100,4 +100,4 @@ class AnalyticsApp extends React.Component {
   }
 }
 
-export default AnalyticsApp;
+export default EventStatsApp;

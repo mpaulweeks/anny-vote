@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import AdminApp from './AdminApp';
-import AnalyticsApp from './AnalyticsApp';
+import EventStatsApp from './EventStatsApp';
 import VoteApp from './VoteApp';
 import { withCookies, CookiesProvider } from 'react-cookie';
 
@@ -17,9 +17,9 @@ const render = App => {
 }
 const path = window.location.pathname;
 if (path.includes('analytics')){
-  render(AnalyticsApp);
+  render(EventStatsApp);
 } else if (path.includes('stats')){
-  render(AnalyticsApp);
+  render(EventStatsApp);
 } else if (path.includes('admin')){
   render(AdminApp);
 } else {
