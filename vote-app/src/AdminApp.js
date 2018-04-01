@@ -56,6 +56,7 @@ class AdminApp extends React.Component {
               screening #{e.number}
             </AdminEventTitle>
             <AdminEventLinks>
+              <a href={`http://www.animationnights.com/${e.slug}/`}>ANNY page</a>
               <a href={`/event/${e.number}/`}>vote</a>
               <a href={`/stats/event/${e.number}/`}>stats</a>
             </AdminEventLinks>
