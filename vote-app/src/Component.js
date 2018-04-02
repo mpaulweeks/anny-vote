@@ -71,7 +71,7 @@ class Logo extends React.Component {
     return (
       <LogoContainer>
         <a href='http://www.animationnights.com'>
-          <LogoImage src='anny.png' />
+          <LogoImage src='/anny.png' />
         </a>
         <div>
           Animation Nights New York
