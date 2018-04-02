@@ -54,10 +54,18 @@ class Film(BaseModel):
     created_at = DateTimeField(default=datetime.datetime.utcnow)
 
     def is_vr(self):
-        return self.name.lower().startswith('vr selection:')
+        return (
+            self.name.lower().startswith('vr selection') or
+            self.name.lower().startswith('vr artist tool selection')
+        )
+
+    def is_anny(self):
+        return (
+            self.name.lower().startswith('animation nights new york')
+        )
 
     def hide(self):
-        return self.is_vr()
+        return self.is_vr() or self.is_anny()
 
     def to_dict(self):
         model_dict = super(Film, self).to_dict()
