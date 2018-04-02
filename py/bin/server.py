@@ -87,7 +87,7 @@ def get_votes(event_id):
     return to_json(votes)
 
 
-@app.route('/api/scrape')
+@app.route('/api/scrape', methods=['POST'])
 def scrape_events():
     new_slugs = store.scrape_and_record()
     EVENT_CACHE.clear()

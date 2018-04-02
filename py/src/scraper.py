@@ -17,8 +17,7 @@ class FilmInfo():
         }
 
 
-def scrape_event_slugs():
-    url = 'http://www.animationnights.com/events-2/'
+def search_for_events(url):
     req = requests.get(url)
 
     if(req.status_code != 200):
@@ -38,6 +37,12 @@ def scrape_event_slugs():
                 slug = slug[0:-1]
             event_slugs.append(slug)
     return event_slugs
+
+
+def scrape_event_slugs():
+    past = search_for_events('http://www.animationnights.com/pastprograms/')
+    curr = search_for_events('http://www.animationnights.com/events-2/')
+    return curr + past
 
 
 def scrape_event(slug):
@@ -65,6 +70,6 @@ def scrape_event(slug):
 
 if __name__ == '__main__':
     # scrape_event('screening30')
-    for f in scrape_event('screening31'):
-        print(f.to_json())
+    # for f in scrape_event('screening31'):
+        # print(f.to_json())
     print(scrape_event_slugs())

@@ -88,10 +88,24 @@ function fetchEventVotes(eventId){
     })
 }
 
+function scrape(){
+  const settings = {
+    cache: "no-store",
+    method: 'POST',
+  };
+  return fetch(`${BASE}/scrape`, settings)
+    .then(resp => resp.json())
+    .catch(err => {
+      console.log(err);
+      return err;
+    })
+}
+
 export default {
   fetchOldVotes,
   fetchUrlEvent,
   fetchAllEvents,
   recordVotes,
   fetchEventVotes,
+  scrape,
 }

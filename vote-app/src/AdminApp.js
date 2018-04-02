@@ -5,6 +5,7 @@ import {
   Loading,
   CenterRow,
   Logo,
+  Submit,
   InternalWarning,
   AdminEventRow,
   AdminEventTitle,
@@ -25,6 +26,7 @@ class AdminApp extends React.Component {
     super(props);
     this.state = {
       eventsData: null,
+      scraping: false,
     }
   }
   componentDidMount() {
@@ -39,8 +41,18 @@ class AdminApp extends React.Component {
       eventsData: eventsData,
     });
   }
+  scrape(){
+    this.setState({
+      scraping: true,
+    });
+    API.scrape().then(res => {
+      const message = `${res.length} new events found`;
+      window.alert(message, res);
+      window.location.reload();
+    });
+  }
   render() {
-    const { eventsData } = this.state;
+    const { eventsData, scraping } = this.state;
     if (!eventsData){
       return <Loading></Loading>;
     }
@@ -49,6 +61,15 @@ class AdminApp extends React.Component {
         <CenterRow>
           <InternalWarning></InternalWarning>
           <Logo />
+          {scraping ? (
+            <p>
+              scraping, this could take a while...
+            </p>
+          ) : (
+            <Submit onClick={() => this.scrape()}>
+              Scrape for new events
+            </Submit>
+          )}
         </CenterRow>
         { eventsData.map((e, i) => (
           <AdminEventRow key={i}>
