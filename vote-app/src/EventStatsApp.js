@@ -85,7 +85,7 @@ class EventStatsApp extends React.Component {
             </tr>
           </thead>
           <tbody>
-          {orderedFilms.map(f => (
+          {orderedFilms.map(f => f.hide ? '' : (
             <tr key={f.id}>
               <td>{f.votes}</td>
               <td>
