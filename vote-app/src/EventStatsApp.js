@@ -95,6 +95,14 @@ class EventStatsApp extends React.Component {
           ))}
           </tbody>
         </AnalyticsTable>
+        <CenterRow>
+          <div>omitted:</div>
+          <ul>
+          {eventData.films.map(f => !f.hide ? '' : (
+            <li key={f.id}>{f.name}</li>
+          ))}
+          </ul>
+        </CenterRow>
       </div>
     )
   }
