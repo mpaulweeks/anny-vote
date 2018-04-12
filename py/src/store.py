@@ -53,6 +53,7 @@ def get_votes_by_event(event_id):
     most_recent_votes = (
         Vote
         .select()
+        .where(Vote.event_id == event_id)
         .group_by(Vote.user_token)
         .having(Vote.created_at == fn.MAX(Vote.created_at))
     )
