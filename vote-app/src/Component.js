@@ -14,7 +14,6 @@ const Container = styled.div`
 `;
 
 const Row = styled.div`
-  min-width: 300px;
   max-width: 400px;
   margin-top: 0px;
   margin-bottom: 9px;
