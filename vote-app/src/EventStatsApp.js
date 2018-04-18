@@ -50,7 +50,7 @@ class EventWeekStats extends React.Component {
             </tr>
           </thead>
           <tbody>
-          {films.map(f => f.hide ? '' : (
+          {films.map(f => f.hide ? null : (
             <tr key={f.id}>
               <td>{f.votes}</td>
               <td>
