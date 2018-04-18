@@ -1,5 +1,6 @@
 
 from collections import defaultdict
+from datetime import datetime, timedelta
 import json
 
 from peewee import (
@@ -59,12 +60,14 @@ def get_votes_by_event(event_id):
     )
     count = 0
     aggregate = defaultdict(int)
+    epoch = datetime.now() - timedelta(hours=24)
     for vote in most_recent_votes:
-        count += 1
-        vote_data = json.loads(vote.blob)
-        for film_id, liked in vote_data.items():
-            if liked:
-                aggregate[film_id] += 1
+        if epoch <= vote.created_at:
+            count += 1
+            vote_data = json.loads(vote.blob)
+            for film_id, liked in vote_data.items():
+                if liked:
+                    aggregate[film_id] += 1
     return {
         'count': count,
         'votes': aggregate,
