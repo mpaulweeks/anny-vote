@@ -5,6 +5,7 @@ import {
   CenterRow,
   SaveMessage,
   AnalyticsTable,
+  EventTitle,
 } from './Component';
 
 class EventWeekStats extends React.Component {
@@ -15,9 +16,9 @@ class EventWeekStats extends React.Component {
     return (
       <div>
         <CenterRow>
-          <SaveMessage>
+          <EventTitle>
             Week of { id }
-          </SaveMessage>
+          </EventTitle>
           <SaveMessage>
             Number of Participants: { count }
           </SaveMessage>

@@ -5,6 +5,7 @@ import EventWeekStats from './EventWeekStats';
 import {
   Loading,
   CenterRow,
+  FlexColumnRow,
   Logo,
   InternalWarning,
   ScreeningTitle,
@@ -70,12 +71,14 @@ class EventStatsApp extends React.Component {
           <ScreeningTitle event={eventData.event}></ScreeningTitle>
         </CenterRow>
 
-        {eventVoteData.map(weekData => (
-          <EventWeekStats
-            key={weekData.id}
-            weekData={weekData}
-          ></EventWeekStats>
-        ))}
+        <FlexColumnRow>
+          {eventVoteData.map(weekData => (
+            <EventWeekStats
+              key={weekData.id}
+              weekData={weekData}
+            ></EventWeekStats>
+          ))}
+        </FlexColumnRow>
 
         <CenterRow>
           <div>omitted:</div>

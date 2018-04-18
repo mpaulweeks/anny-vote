@@ -14,6 +14,7 @@ const Container = styled.div`
 `;
 
 const Row = styled.div`
+  min-width: 300px;
   max-width: 400px;
   margin-top: 0px;
   margin-bottom: 9px;
@@ -50,6 +51,20 @@ const CenterRow = styled(Row)`
   text-align: center;
   & img {
     margin: 0px auto;
+  }
+`;
+
+const FlexColumnRow = styled(Row)`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+
+  max-width: 100%;
+
+  & > div {
+    margin: 0px 5px;
   }
 `;
 
@@ -213,6 +228,7 @@ export {
   Row,
   FilmRow,
   CenterRow,
+  FlexColumnRow,
   Logo,
   ScreeningTitle,
   EventTitle,
