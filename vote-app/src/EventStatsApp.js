@@ -21,6 +21,50 @@ function compareFilms(a,b) {
   return 0;
 }
 
+class EventWeekStats extends React.Component {
+  render() {
+    const { weekData } = this.props;
+    const { id, count, films, totalVotes } = weekData;
+    const avgVotes = (totalVotes / count).toFixed(1);
+    return (
+      <div>
+        <CenterRow>
+          <SaveMessage>
+            Week of { id }
+          </SaveMessage>
+          <SaveMessage>
+            Number of Participants: { count }
+          </SaveMessage>
+          <SaveMessage>
+            Total Votes: { totalVotes }
+          </SaveMessage>
+          <SaveMessage>
+            Average Votes Per User: { avgVotes }
+          </SaveMessage>
+        </CenterRow>
+        <AnalyticsTable>
+          <thead>
+            <tr>
+              <th>votes</th>
+              <th>film</th>
+            </tr>
+          </thead>
+          <tbody>
+          {films.map(f => f.hide ? '' : (
+            <tr key={f.id}>
+              <td>{f.votes}</td>
+              <td>
+                <VoteFilm data={f}></VoteFilm>
+              </td>
+            </tr>
+          ))}
+          </tbody>
+        </AnalyticsTable>
+      </div>
+    );
+  }
+}
+
 class EventStatsApp extends React.Component {
   constructor(props) {
     super(props);
@@ -37,64 +81,47 @@ class EventStatsApp extends React.Component {
     })
   }
   processVotes(eventData, eventVoteData){
-    const films = [];
-    let totalVotes = 0;
-    eventData.films.forEach(f => {
-      const votes = eventVoteData.votes[f.id] || 0;
-      films.push({
-        ...f,
-        votes: votes,
+    eventVoteData.forEach(weekData => {
+      const films = [];
+      let totalVotes = 0;
+      eventData.films.forEach(f => {
+        const votes = weekData.votes[f.id] || 0;
+        films.push({
+          ...f,
+          votes: votes,
+        });
+        totalVotes += votes;
       });
-      totalVotes += votes;
+      films.sort(compareFilms).reverse();
+
+      weekData.totalVotes = totalVotes;
+      weekData.films = films;
     });
-    films.sort(compareFilms).reverse();
     this.setState({
       eventData: eventData,
       eventVoteData: eventVoteData,
-      orderedFilms: films,
-      totalVotes: totalVotes,
     });
   }
   render() {
-    const { eventData, eventVoteData, orderedFilms, totalVotes } = this.state;
+    const { eventData, eventVoteData } = this.state;
     if (!eventData){
       return <Loading></Loading>;
     }
-    const avgVotes = (totalVotes / eventVoteData.count).toFixed(1);
     return (
       <div>
         <CenterRow>
           <InternalWarning></InternalWarning>
           <Logo />
           <ScreeningTitle event={eventData.event}></ScreeningTitle>
-          <SaveMessage>
-            Number of Participants: {eventVoteData.count}
-          </SaveMessage>
-          <SaveMessage>
-            Total Votes: {totalVotes}
-          </SaveMessage>
-          <SaveMessage>
-            Average Votes Per User: {avgVotes}
-          </SaveMessage>
         </CenterRow>
-        <AnalyticsTable>
-          <thead>
-            <tr>
-              <th>votes</th>
-              <th>film</th>
-            </tr>
-          </thead>
-          <tbody>
-          {orderedFilms.map(f => f.hide ? '' : (
-            <tr key={f.id}>
-              <td>{f.votes}</td>
-              <td>
-                <VoteFilm data={f}></VoteFilm>
-              </td>
-            </tr>
-          ))}
-          </tbody>
-        </AnalyticsTable>
+
+        {eventVoteData.map(weekData => (
+          <EventWeekStats
+            key={weekData.id}
+            weekData={weekData}
+          ></EventWeekStats>
+        ))}
+
         <CenterRow>
           <div>omitted:</div>
           <ul>

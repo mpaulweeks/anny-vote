@@ -50,6 +50,16 @@ def get_votes_by_event_and_token(event_id, token):
     return json.loads(vote.blob)
 
 
+def calc_week(dt):
+    # todo convert to est
+    temp = dt
+    while temp.weekday() != 6:  # 6 == Sunday
+        # walk back to find first day of the week
+        temp = temp - timedelta(days=1)
+    week = str(temp)[0:10]
+    return week
+
+
 def get_votes_by_event(event_id):
     most_recent_votes = (
         Vote
@@ -59,19 +69,23 @@ def get_votes_by_event(event_id):
         .having(Vote.created_at == fn.MAX(Vote.created_at))
     )
     count = 0
-    aggregate = defaultdict(int)
-    epoch = datetime.now() - timedelta(hours=24)
+    by_week = {}
     for vote in most_recent_votes:
-        if epoch <= vote.created_at:
-            count += 1
-            vote_data = json.loads(vote.blob)
-            for film_id, liked in vote_data.items():
-                if liked:
-                    aggregate[film_id] += 1
-    return {
-        'count': count,
-        'votes': aggregate,
-    }
+        vote_week = calc_week(vote.created_at)
+        if vote_week not in by_week:
+          by_week[vote_week] = {
+            'id': vote_week,
+            'count': 0,
+            'votes': defaultdict(int),
+          }
+        aggregate = by_week[vote_week]
+        aggregate['count'] += 1
+        vote_data = json.loads(vote.blob)
+        for film_id, liked in vote_data.items():
+            if liked:
+                aggregate['votes'][film_id] += 1
+    week_array = [week_data for week_data in by_week.values()]
+    return sorted(week_array, reverse=True, key=lambda wd: wd['id'])
 
 
 def record_votes(event_id, token, votes):
