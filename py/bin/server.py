@@ -24,7 +24,7 @@ def json_serial(obj):
 
 
 def to_json(obj):
-  return json.dumps(obj, default=json_serial)
+    return json.dumps(obj, default=json_serial)
 
 
 def get_cached_event(number):
@@ -40,8 +40,8 @@ def get_cached_event(number):
 app = Flask(
     __name__,
 )
-# temp for local dev
-CORS(app)
+# only enable CORS in flask for local dev
+CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
 
 
 @app.route('/api/event/latest')
