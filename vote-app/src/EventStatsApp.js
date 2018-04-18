@@ -1,15 +1,13 @@
 import React from 'react';
 
 import API from './API';
-import VoteFilm from './VoteFilm';
+import EventWeekStats from './EventWeekStats';
 import {
   Loading,
   CenterRow,
   Logo,
   InternalWarning,
   ScreeningTitle,
-  SaveMessage,
-  AnalyticsTable,
 } from './Component';
 
 
@@ -21,49 +19,6 @@ function compareFilms(a,b) {
   return 0;
 }
 
-class EventWeekStats extends React.Component {
-  render() {
-    const { weekData } = this.props;
-    const { id, count, films, totalVotes } = weekData;
-    const avgVotes = (totalVotes / count).toFixed(1);
-    return (
-      <div>
-        <CenterRow>
-          <SaveMessage>
-            Week of { id }
-          </SaveMessage>
-          <SaveMessage>
-            Number of Participants: { count }
-          </SaveMessage>
-          <SaveMessage>
-            Total Votes: { totalVotes }
-          </SaveMessage>
-          <SaveMessage>
-            Average Votes Per User: { avgVotes }
-          </SaveMessage>
-        </CenterRow>
-        <AnalyticsTable>
-          <thead>
-            <tr>
-              <th>votes</th>
-              <th>film</th>
-            </tr>
-          </thead>
-          <tbody>
-          {films.map(f => f.hide ? null : (
-            <tr key={f.id}>
-              <td>{f.votes}</td>
-              <td>
-                <VoteFilm data={f}></VoteFilm>
-              </td>
-            </tr>
-          ))}
-          </tbody>
-        </AnalyticsTable>
-      </div>
-    );
-  }
-}
 
 class EventStatsApp extends React.Component {
   constructor(props) {
