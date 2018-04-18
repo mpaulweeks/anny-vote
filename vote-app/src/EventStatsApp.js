@@ -82,11 +82,10 @@ class EventStatsApp extends React.Component {
 
         <CenterRow>
           <div>omitted:</div>
-          <ul>
+          <br/>
           {eventData.films.map(f => !f.hide ? '' : (
-            <li key={f.id}>{f.name}</li>
+            <div key={f.id}>{f.name}</div>
           ))}
-          </ul>
         </CenterRow>
       </div>
     )
