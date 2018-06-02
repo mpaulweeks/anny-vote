@@ -1,6 +1,7 @@
 import datetime
 import json
 import os
+import re
 
 from peewee import (
     SqliteDatabase,
@@ -36,8 +37,16 @@ class Event(BaseModel):
     created_at = DateTimeField(default=datetime.datetime.utcnow)
 
     @classmethod
-    def create_from_slug(cls, slug):
-        number = int(slug.split('screening')[-1])
+    def extract_slug_number(cls, slug):
+        if slug == '2018annycannes-screening':
+            return 33
+        results = re.findall(r'^screening(\d+)$', slug)
+        if len(results) > 0:
+            return results[0]
+        return None
+
+    @classmethod
+    def create_from_slug(cls, slug, number):
         return Event.create(
             number=number,
             slug=slug,

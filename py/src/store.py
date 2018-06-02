@@ -101,9 +101,10 @@ def scrape_and_record():
     slugs_inserted = []
     for es in event_slugs:
         query = Event.select().where(Event.slug == es)
-        if not query.exists():
+        number = Event.extract_slug_number(es)
+        if number and not query.exists():
             slugs_inserted.append(es)
-            event = Event.create_from_slug(es)
+            event = Event.create_from_slug(es, number)
             filmInfos = scrape_event(es)
             for index, filmInfo in enumerate(filmInfos):
                 Film.create_from_scraped_info(event, index, filmInfo)
