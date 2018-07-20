@@ -88,12 +88,13 @@ function fetchEventVotes(eventId){
     })
 }
 
-function scrape(){
+function scrape(settings){
   const settings = {
     cache: "no-store",
     method: 'POST',
+    body: JSON.stringify(settings),
   };
-  return fetch(`${BASE}/scrape`, settings)
+  return fetch(`${BASE}/scrape/`, settings)
     .then(resp => resp.json())
     .catch(err => {
       console.log(err);

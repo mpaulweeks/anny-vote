@@ -27,6 +27,7 @@ class AdminApp extends React.Component {
     this.state = {
       eventsData: null,
       scraping: false,
+      scrapeResults: null,
     }
   }
   componentDidMount() {
@@ -44,15 +45,17 @@ class AdminApp extends React.Component {
   scrape(){
     this.setState({
       scraping: true,
-    });
-    API.scrape().then(res => {
-      const message = `${res.length} new events found`;
-      window.alert(message, res);
-      window.location.reload();
+    }, () => {
+      API.scrape().then(res => {
+        const message = `${res.length} new events found`;
+        this.setState({
+          scrapeResults: res,
+        });
+      });
     });
   }
   render() {
-    const { eventsData, scraping } = this.state;
+    const { eventsData, scraping, scrapeResults } = this.state;
     if (!eventsData){
       return <Loading></Loading>;
     }
@@ -71,6 +74,7 @@ class AdminApp extends React.Component {
             </Submit>
           )}
         </CenterRow>
+        { scrapeResults && <p> { JSON.stringify(scrapeResults) } </p> }
         { eventsData.map((e, i) => (
           <AdminEventRow key={i}>
             <AdminEventTitle>
