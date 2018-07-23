@@ -87,17 +87,17 @@ def get_votes(event_id):
     return to_json(votes)
 
 
-@app.route('/api/scrape', methods=['POST'])
-def scrape():
-    data = request.get_json()
-    result = store.scrape_and_record()
-    EVENT_CACHE.clear()
+@app.route('/api/crawl', methods=['POST'])
+def crawl():
+    result = store.crawl()
     return to_json(result)
 
 
-@app.route('/api/crawl', methods=['POST'])
+@app.route('/api/scrape', methods=['POST'])
 def scrape():
-    result = store.crawl()
+    data = request.get_json()
+    result = store.scrape_and_record(data['url'])
+    EVENT_CACHE.clear()
     return to_json(result)
 
 

@@ -26,6 +26,9 @@ class AdminApp extends React.Component {
     super(props);
     this.state = {
       eventsData: null,
+      crawling: false,
+      crawlError: null,
+      crawlResults: null,
       scraping: false,
       scrapeResults: null,
     }
@@ -42,20 +45,48 @@ class AdminApp extends React.Component {
       eventsData: eventsData,
     });
   }
+  crawl(){
+    this.setState({
+      crawling: true,
+    }, () => {
+      API.crawl().then(res => {
+        console.log('then')
+        this.setState({
+          crawling: false,
+          crawlError: null,
+          crawlResults: res,
+        });
+      }).catch(err => {
+        console.log('catch')
+        this.setState({
+          crawling: false,
+          crawlError: err.toString(),
+          crawlResults: null,
+        });
+      })
+    });
+  }
   scrape(){
     this.setState({
       scraping: true,
     }, () => {
       API.scrape().then(res => {
-        const message = `${res.length} new events found`;
         this.setState({
+          scraping: false,
           scrapeResults: res,
         });
       });
     });
   }
   render() {
-    const { eventsData, scraping, scrapeResults } = this.state;
+    const {
+      eventsData,
+      crawling,
+      crawlError,
+      crawlResults,
+      scraping,
+      scrapeResults,
+    } = this.state;
     if (!eventsData){
       return <Loading></Loading>;
     }
@@ -64,6 +95,21 @@ class AdminApp extends React.Component {
         <CenterRow>
           <InternalWarning></InternalWarning>
           <Logo />
+          {crawling ? (
+            <p>
+              crawling, this could take a while...
+            </p>
+          ) : (
+            <Submit onClick={() => this.crawl()}>
+              Crawl for new event pages
+            </Submit>
+          )}
+          { crawlError && (
+            <p>
+              There was an error: { crawlError }
+            </p>
+          )}
+          { crawlResults && <p> { JSON.stringify(crawlResults) } </p> }
           {scraping ? (
             <p>
               scraping, this could take a while...
@@ -73,8 +119,8 @@ class AdminApp extends React.Component {
               Scrape for new events
             </Submit>
           )}
+          { scrapeResults && <p> { JSON.stringify(scrapeResults) } </p> }
         </CenterRow>
-        { scrapeResults && <p> { JSON.stringify(scrapeResults) } </p> }
         { eventsData.map((e, i) => (
           <AdminEventRow key={i}>
             <AdminEventTitle>

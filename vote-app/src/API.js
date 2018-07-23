@@ -5,16 +5,24 @@ const BASE = (
   ''
 ) + '/api';
 
+function handleResponse(response){
+  if (!response.ok) {
+    throw Error(response.statusText);
+  }
+  return response.json();
+}
+function handleError(err){
+  console.log('API error!', err);
+  throw err;
+}
+
 function fetchOldVotes(eventId, token){
   const settings = {
     cache: "no-store",
   };
   return fetch(`${BASE}/event/${eventId}/user/${token}/votes`, settings)
-    .then(resp => resp.json())
-    .catch(err => {
-      console.log(err);
-      return err;
-    })
+    .then(handleResponse)
+    .catch(handleError)
 }
 
 function fetchLatestEvent(){
@@ -22,20 +30,14 @@ function fetchLatestEvent(){
     cache: "no-store",
   };
   return fetch(`${BASE}/event/latest`, settings)
-    .then(resp => resp.json())
-    .catch(err => {
-      console.log(err);
-      return err;
-    })
+    .then(handleResponse)
+    .catch(handleError)
 }
 
 function fetchEvent(number){
   return fetch(`${BASE}/event/number/${number}`)
-    .then(resp => resp.json())
-    .catch(err => {
-      console.log(err);
-      return err;
-    })
+    .then(handleResponse)
+    .catch(handleError)
 }
 
 function fetchUrlEvent(){
@@ -50,11 +52,8 @@ function fetchUrlEvent(){
 
 function fetchAllEvents(){
   return fetch(`${BASE}/events`)
-    .then(resp => resp.json())
-    .catch(err => {
-      console.log(err);
-      return err;
-    })
+    .then(handleResponse)
+    .catch(handleError)
 }
 
 function recordVotes(eventId, token, voteData){
@@ -69,11 +68,8 @@ function recordVotes(eventId, token, voteData){
     }),
   };
   return fetch(`${BASE}/event/${eventId}/user/${token}/votes`, settings)
-    .then(resp => resp.json())
-    .catch(err => {
-      console.log(err);
-      return err;
-    })
+    .then(handleResponse)
+    .catch(handleError)
 }
 
 function fetchEventVotes(eventId){
@@ -81,37 +77,31 @@ function fetchEventVotes(eventId){
     cache: "no-store",
   };
   return fetch(`${BASE}/event/${eventId}/votes`, settings)
-    .then(resp => resp.json())
-    .catch(err => {
-      console.log(err);
-      return err;
-    })
+    .then(handleResponse)
+    .catch(handleError)
 }
 
-function scrape(settings){
-  const settings = {
-    cache: "no-store",
-    method: 'POST',
-    body: JSON.stringify(settings),
-  };
-  return fetch(`${BASE}/scrape/`, settings)
-    .then(resp => resp.json())
-    .catch(err => {
-      console.log(err);
-      return err;
-    })
-}
-
-function crawl(settings){
+function crawl(){
   const settings = {
     cache: "no-store",
     method: 'POST',
   };
-  return fetch(`${BASE}/crawl/`, settings)
-    .then(resp => resp.json())
+  return fetch(`${BASE}/crawl`, settings)
+    .then(handleResponse)
+    .catch(handleError)
+}
+
+function scrape(body){
+  const settings = {
+    cache: "no-store",
+    method: 'POST',
+    body: JSON.stringify(body),
+  };
+  return fetch(`${BASE}/scrape`, settings)
+    .then(handleResponse)
     .catch(err => {
       console.log(err);
-      return err;
+      throw err;
     })
 }
 
@@ -121,5 +111,6 @@ export default {
   fetchAllEvents,
   recordVotes,
   fetchEventVotes,
+  crawl,
   scrape,
 }
