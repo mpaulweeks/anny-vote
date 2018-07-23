@@ -13,7 +13,7 @@ from .model import (
     Vote,
 )
 from .scraper import (
-    scrape_event_slugs,
+    crawl_events,
     scrape_event,
 )
 
@@ -97,7 +97,7 @@ def record_votes(event_id, token, votes):
 
 
 def scrape_and_record():
-    event_slugs = scrape_event_slugs()
+    event_slugs = crawl_events()
     slugs_inserted = []
     for es in event_slugs:
         query = Event.select().where(Event.slug == es)

@@ -102,6 +102,19 @@ function scrape(settings){
     })
 }
 
+function crawl(settings){
+  const settings = {
+    cache: "no-store",
+    method: 'POST',
+  };
+  return fetch(`${BASE}/crawl/`, settings)
+    .then(resp => resp.json())
+    .catch(err => {
+      console.log(err);
+      return err;
+    })
+}
+
 export default {
   fetchOldVotes,
   fetchUrlEvent,

@@ -90,15 +90,15 @@ def get_votes(event_id):
 @app.route('/api/scrape', methods=['POST'])
 def scrape():
     data = request.get_json()
-    result = None
-    if data.get('url'):
-      result = store.scrape_and_record()
-    elif data.get('events'):
-      result = store.scrape_and_record()
-    if result:
-      EVENT_CACHE.clear()
-      return to_json(result)
-    abort(404)
+    result = store.scrape_and_record()
+    EVENT_CACHE.clear()
+    return to_json(result)
+
+
+@app.route('/api/crawl', methods=['POST'])
+def scrape():
+    result = store.crawl()
+    return to_json(result)
 
 
 @app.route('/api/data')

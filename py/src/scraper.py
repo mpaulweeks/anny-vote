@@ -17,7 +17,7 @@ class FilmInfo():
         }
 
 
-def search_for_events(url):
+def crawl_for_events(url):
     req = requests.get(url)
 
     if(req.status_code != 200):
@@ -26,28 +26,24 @@ def search_for_events(url):
 
     soup = BeautifulSoup(req.text, 'html.parser')
 
-    event_slugs = []
+    event_urls = []
     event_links = soup.find_all('span', {'class': 'mk-button--text'})
     for el in event_links:
         url = el.parent.get('href')
         prefix = 'www.animationnights.com/'
         if prefix in url:
-            slug = url.split(prefix)[-1]
-            if slug[-1] == '/':
-                slug = slug[0:-1]
-            event_slugs.append(slug)
-    return event_slugs
+            event_urls.append(url)
+    return event_urls
 
 
-def scrape_event_slugs():
+def crawl_events():
     past = search_for_events('http://www.animationnights.com/pastprograms/')
     curr = search_for_events('http://www.animationnights.com/events-2/')
     return curr + past
 
 
-def scrape_event(slug):
-    print('scraping event:', slug)
-    url = 'http://www.animationnights.com/%s/' % slug
+def scrape_event(url):
+    print('scraping event:', url)
     req = requests.get(url)
 
     if(req.status_code != 200):
