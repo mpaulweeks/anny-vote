@@ -109,7 +109,14 @@ class AdminApp extends React.Component {
               There was an error: { crawlError }
             </p>
           )}
-          { crawlResults && <p> { JSON.stringify(crawlResults) } </p> }
+          { crawlResults && (
+            <div>
+              <strong> Found the following event URLs: </strong>
+              { crawlResults.map((url, i) => (
+                <div key={'crawl-'+i}> {url} </div>
+              ))}
+            </div>
+          )}
           {scraping ? (
             <p>
               scraping, this could take a while...

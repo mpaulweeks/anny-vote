@@ -95,8 +95,7 @@ def crawl():
 
 @app.route('/api/scrape', methods=['POST'])
 def scrape():
-    data = request.get_json()
-    result = store.scrape_and_record(data['url'])
+    result = store.scrape_and_record()
     EVENT_CACHE.clear()
     return to_json(result)
 

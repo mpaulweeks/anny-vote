@@ -3,6 +3,9 @@ import requests
 from bs4 import BeautifulSoup
 
 
+PREFIX = 'www.animationnights.com/'
+
+
 class FilmInfo():
     def __init__(self, name, description, image_url):
         self.name = name
@@ -29,16 +32,22 @@ def crawl_for_events(url):
     event_urls = []
     event_links = soup.find_all('span', {'class': 'mk-button--text'})
     for el in event_links:
-        url = el.parent.get('href')
-        prefix = 'www.animationnights.com/'
-        if prefix in url:
+        url = el.parent.get('href').strip()
+        if PREFIX in url:
             event_urls.append(url)
     return event_urls
 
 
+def extract_slug_from_url(url):
+    slug = url.split(PREFIX)[-1]
+    if slug[-1] == '/':
+        slug = slug[0:-1]
+    return slug
+
+
 def crawl_events():
-    past = search_for_events('http://www.animationnights.com/pastprograms/')
-    curr = search_for_events('http://www.animationnights.com/events-2/')
+    past = crawl_for_events('http://www.animationnights.com/pastprograms/')
+    curr = crawl_for_events('http://www.animationnights.com/events-2/')
     return curr + past
 
 
@@ -62,10 +71,3 @@ def scrape_event(url):
         films.append(film)
 
     return films
-
-
-if __name__ == '__main__':
-    # scrape_event('screening30')
-    # for f in scrape_event('screening31'):
-        # print(f.to_json())
-    print(scrape_event_slugs())

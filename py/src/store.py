@@ -1,6 +1,6 @@
 
 from collections import defaultdict
-from datetime import datetime, timedelta
+from datetime import timedelta
 import json
 
 from peewee import (
@@ -15,6 +15,7 @@ from .model import (
 from .scraper import (
     crawl_events,
     scrape_event,
+    extract_slug_from_url,
 )
 
 
@@ -24,9 +25,9 @@ def get_latest_event():
 
 def get_all_events():
     return [
-      e.to_dict()
-      for e
-      in Event.select()
+        e.to_dict()
+        for e
+        in Event.select()
     ]
 
 
@@ -68,16 +69,15 @@ def get_votes_by_event(event_id):
         .group_by(Vote.user_token)
         .having(Vote.created_at == fn.MAX(Vote.created_at))
     )
-    count = 0
     by_week = {}
     for vote in most_recent_votes:
         vote_week = calc_week(vote.created_at)
         if vote_week not in by_week:
-          by_week[vote_week] = {
-            'id': vote_week,
-            'count': 0,
-            'votes': defaultdict(int),
-          }
+            by_week[vote_week] = {
+                'id': vote_week,
+                'count': 0,
+                'votes': defaultdict(int),
+            }
         aggregate = by_week[vote_week]
         aggregate['count'] += 1
         vote_data = json.loads(vote.blob)
@@ -96,16 +96,21 @@ def record_votes(event_id, token, votes):
     ).to_dict()
 
 
+def crawl():
+    return crawl_events()
+
+
 def scrape_and_record():
-    event_slugs = crawl_events()
+    event_urls = crawl_events()
     slugs_inserted = []
-    for es in event_slugs:
+    for url in event_urls:
+        es = extract_slug_from_url(url)
         query = Event.select().where(Event.slug == es)
         number = Event.extract_slug_number(es)
         if number and not query.exists():
             slugs_inserted.append(es)
             event = Event.create_from_slug(es, number)
-            filmInfos = scrape_event(es)
+            filmInfos = scrape_event(url)
             for index, filmInfo in enumerate(filmInfos):
                 Film.create_from_scraped_info(event, index, filmInfo)
     return slugs_inserted
