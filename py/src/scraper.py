@@ -4,6 +4,10 @@ from bs4 import BeautifulSoup
 
 
 PREFIX = 'www.animationnights.com/'
+CRAWL_URLS = [
+    'http://www.animationnights.com/events-2/',
+    'http://www.animationnights.com/pastprograms/',
+]
 
 
 class FilmInfo():
@@ -20,14 +24,18 @@ class FilmInfo():
         }
 
 
-def crawl_for_events(url):
+def crawl_url_for_events(url):
     req = requests.get(url)
 
     if(req.status_code != 200):
         print(req.status_code, url)
         return []
 
-    soup = BeautifulSoup(req.text, 'html.parser')
+    return crawl_html_for_events(req.text)
+
+
+def crawl_html_for_events(html_text):
+    soup = BeautifulSoup(html_text, 'html.parser')
 
     event_urls = []
     event_links = soup.find_all('span', {'class': 'mk-button--text'})
@@ -46,9 +54,11 @@ def extract_slug_from_url(url):
 
 
 def crawl_events():
-    past = crawl_for_events('http://www.animationnights.com/pastprograms/')
-    curr = crawl_for_events('http://www.animationnights.com/events-2/')
-    return curr + past
+    return [
+        event_url
+        for to_crawl in CRAWL_URLS
+        for event_url in crawl_url_for_events(to_crawl)
+    ]
 
 
 def scrape_event(url):
