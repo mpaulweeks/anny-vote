@@ -45,10 +45,9 @@ jobs:
       # https://pytest.org
       # https://nose.readthedocs.io
       - run:
-          name: run tests
+          name: python tests
           command: |
-            . venv/bin/activate
-            python manage.py test
+            make pytest
 
       - store_artifacts:
           path: test-reports
