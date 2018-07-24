@@ -1,4 +1,7 @@
 # anny-vote
+
+[![CircleCI](https://circleci.com/gh/mpaulweeks/anny-vote/tree/master.svg?style=svg)](https://circleci.com/gh/mpaulweeks/anny-vote/tree/master)
+
 simple voting app for ANNY
 
 ## setup
