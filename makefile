@@ -5,4 +5,4 @@ api:
 	./bash/server_anny_vote.sh
 
 pytest:
-	source venv/bin/activate && cd py && python -m unittest
+	. venv/bin/activate && cd py && python -m unittest
