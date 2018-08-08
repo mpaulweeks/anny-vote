@@ -128,10 +128,38 @@ class AdminApp extends React.Component {
             </AdminEventRow>
           ))}
 
-          <h2>Crawl for scrapable pages</h2>
+
+          <h2>Try to scrape a custom url</h2>
+          {scrapingCustom ? (
+            <p>
+              scraping, this should take just a few seconds...
+            </p>
+          ) : (
+            <div>
+              <div>
+                <InputCustomUrl innerRef={ref => this.scrapeCustomInput = ref} />
+              </div>
+              <br/>
+              <Submit onClick={() => this.scrapeCustomUrl()}>
+                Scrape custom URL
+              </Submit>
+            </div>
+          )}
+          { scrapeCustomResults && (
+            <div>
+              <p> Results: </p>
+              <p>{ JSON.stringify(scrapeCustomResults) }</p>
+              { scrapeCustomResults.length > 0 && (
+                <p> Refresh the page! </p>
+              )}
+            </div>
+          )}
+
+
+          <h2>Crawl for scrape-able pages</h2>
           {crawling ? (
             <p>
-              crawling, this could take a while...
+              crawling, this should take just a few seconds...
             </p>
           ) : (
             <Submit onClick={() => this.crawl()}>
@@ -153,36 +181,25 @@ class AdminApp extends React.Component {
           )}
 
 
-          <h2>Scrape the auto-crawl pages</h2>
+          <h2>Auto-Scrape all pages via crawl</h2>
           {scraping ? (
             <p>
-              scraping, this could take a while...
+              scraping, this could take a over a minute...
             </p>
           ) : (
             <Submit onClick={() => this.scrape()}>
-              Scrape for new events
+              Auto-Scrape for new events
             </Submit>
           )}
-          { scrapeResults && <p> { JSON.stringify(scrapeResults) } </p> }
-
-
-          <h2>Try to scrape a custom url</h2>
-          {scrapingCustom ? (
-            <p>
-              scraping, this could take a while...
-            </p>
-          ) : (
+          { scrapeResults && (
             <div>
-              <div>
-                <InputCustomUrl innerRef={ref => this.scrapeCustomInput = ref} />
-              </div>
-              <br/>
-              <Submit onClick={() => this.scrapeCustomUrl()}>
-                Scrape custom URL
-              </Submit>
+              <p> Results: </p>
+              <p>{ JSON.stringify(scrapeResults) }</p>
+              { scrapeResults.length > 0 && (
+                <p> Refresh the page! </p>
+              )}
             </div>
           )}
-          { scrapeCustomResults && <p> { JSON.stringify(scrapeCustomResults) } </p> }
 
 
         </CenterRow>
