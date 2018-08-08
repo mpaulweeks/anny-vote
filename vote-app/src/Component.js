@@ -112,6 +112,18 @@ class ScreeningTitle extends React.Component {
   }
 }
 
+class PollTitle extends React.Component {
+  render() {
+    const { event } = this.props;
+    const url = `/event/${event.slug}/`;
+    return (
+      <EventTitle>
+        <a href={url}>Permalink to Poll</a>
+      </EventTitle>
+    );
+  }
+}
+
 const Submit = styled.button`
   font-size: 20px;
   background-color: var(--background);
@@ -229,8 +241,9 @@ export {
   CenterRow,
   FlexColumnRow,
   Logo,
-  ScreeningTitle,
   EventTitle,
+  ScreeningTitle,
+  PollTitle,
   Submit,
   SaveMessage,
   FilmContainer,

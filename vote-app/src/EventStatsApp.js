@@ -9,6 +9,7 @@ import {
   Logo,
   InternalWarning,
   ScreeningTitle,
+  PollTitle,
 } from './Component';
 
 
@@ -69,6 +70,7 @@ class EventStatsApp extends React.Component {
           <InternalWarning></InternalWarning>
           <Logo />
           <ScreeningTitle event={eventData.event}></ScreeningTitle>
+          <PollTitle event={eventData.event}></PollTitle>
         </CenterRow>
 
         <FlexColumnRow>
@@ -80,13 +82,19 @@ class EventStatsApp extends React.Component {
           ))}
         </FlexColumnRow>
 
-        <CenterRow>
-          <div>omitted:</div>
-          <br/>
-          {eventData.films.map(f => !f.hide ? '' : (
-            <div key={f.id}>{f.name}</div>
-          ))}
-        </CenterRow>
+        {eventVoteData.length === 0 ? (
+          <CenterRow>
+            nobody has voted yet
+          </CenterRow>
+        ) : (
+          <CenterRow>
+            <div>omitted:</div>
+            <br/>
+            {eventData.films.map(f => !f.hide ? '' : (
+              <div key={f.id}>{f.name}</div>
+            ))}
+          </CenterRow>
+        )}
       </div>
     )
   }
