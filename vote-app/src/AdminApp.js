@@ -82,7 +82,17 @@ class AdminApp extends React.Component {
     });
   }
   scrapeCustomUrl(){
-    // todo
+    const url = this.scrapeCustomInput.value;
+    this.setState({
+      scrapingCustom: true,
+    }, () => {
+      API.scrapeCustomUrl(url).then(res => {
+        this.setState({
+          scrapingCustom: false,
+          scrapeCustomResults: res,
+        });
+      });
+    });
   }
   render() {
     const {
@@ -164,7 +174,7 @@ class AdminApp extends React.Component {
           ) : (
             <div>
               <div>
-                <InputCustomUrl innerRef={ref => this.customScrape = ref} />
+                <InputCustomUrl innerRef={ref => this.scrapeCustomInput = ref} />
               </div>
               <br/>
               <Submit onClick={() => this.scrapeCustomUrl()}>

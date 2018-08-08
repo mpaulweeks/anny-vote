@@ -91,13 +91,31 @@ function crawl(){
     .catch(handleError)
 }
 
-function scrape(body){
+function scrape(){
   const settings = {
     cache: "no-store",
     method: 'POST',
-    body: JSON.stringify(body),
   };
   return fetch(`${BASE}/scrape`, settings)
+    .then(handleResponse)
+    .catch(err => {
+      console.log(err);
+      throw err;
+    })
+}
+
+function scrapeCustomUrl(customUrl){
+  const settings = {
+    cache: "no-store",
+    method: 'POST',
+    headers: new Headers({
+      "Content-Type": "application/json",
+    }),
+    body: JSON.stringify({
+      url: customUrl,
+    }),
+  };
+  return fetch(`${BASE}/scrape/custom`, settings)
     .then(handleResponse)
     .catch(err => {
       console.log(err);
@@ -113,4 +131,5 @@ export default {
   fetchEventVotes,
   crawl,
   scrape,
+  scrapeCustomUrl,
 }

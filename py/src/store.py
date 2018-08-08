@@ -100,10 +100,9 @@ def crawl():
     return crawl_events()
 
 
-def scrape_and_record():
-    event_urls = crawl_events()
+def scrape_and_record_urls(urls):
     slugs_inserted = []
-    for url in event_urls:
+    for url in urls:
         es = extract_slug_from_url(url)
         query = Event.select().where(Event.slug == es)
         number = Event.extract_slug_number(es)
@@ -114,6 +113,11 @@ def scrape_and_record():
             for index, filmInfo in enumerate(filmInfos):
                 Film.create_from_scraped_info(event, index, filmInfo)
     return slugs_inserted
+
+
+def scrape_and_record():
+    event_urls = crawl_events()
+    return scrape_and_record_urls(event_urls)
 
 
 def get_all_event_data():
