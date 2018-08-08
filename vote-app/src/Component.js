@@ -197,14 +197,22 @@ const FilmDescription = styled(SubRow)`
   font-size: 16px;
 `;
 
-const InternalWarning = styled.div`
+const InternalWarningDiv = styled.div`
   font-size: 16px;
   font-weight: bold;
-  color: var(--warning);
-  &::after {
-    content: "INTERNAL USE ONLY";
+  & > a {
+    color: var(--warning);
   }
 `;
+class InternalWarning extends React.Component {
+  render() {
+    return (
+      <InternalWarningDiv>
+        <a href="/admin"> INTERNAL USE ONLY </a>
+      </InternalWarningDiv>
+    )
+  }
+}
 
 const AnalyticsTable = styled.table`
   margin: 0px auto;

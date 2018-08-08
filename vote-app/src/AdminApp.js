@@ -93,7 +93,7 @@ class AdminApp extends React.Component {
     return (
       <div>
         <CenterRow>
-          <InternalWarning></InternalWarning>
+          <InternalWarning />
           <Logo />
           {crawling ? (
             <p>

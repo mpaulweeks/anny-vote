@@ -67,7 +67,7 @@ class EventStatsApp extends React.Component {
     return (
       <div>
         <CenterRow>
-          <InternalWarning></InternalWarning>
+          <InternalWarning />
           <Logo />
           <ScreeningTitle event={eventData.event}></ScreeningTitle>
           <PollTitle event={eventData.event}></PollTitle>
