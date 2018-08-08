@@ -10,6 +10,7 @@ import {
   AdminEventRow,
   AdminEventTitle,
   AdminEventLinks,
+  InputCustomUrl,
 } from './Component';
 
 
@@ -31,6 +32,8 @@ class AdminApp extends React.Component {
       crawlResults: null,
       scraping: false,
       scrapeResults: null,
+      scrapingCustom: false,
+      scrapeCustomResults: null,
     }
   }
   componentDidMount() {
@@ -78,6 +81,9 @@ class AdminApp extends React.Component {
       });
     });
   }
+  scrapeCustomUrl(){
+    // todo
+  }
   render() {
     const {
       eventsData,
@@ -86,6 +92,8 @@ class AdminApp extends React.Component {
       crawlResults,
       scraping,
       scrapeResults,
+      scrapingCustom,
+      scrapeCustomResults,
     } = this.state;
     if (!eventsData){
       return <Loading></Loading>;
@@ -95,6 +103,22 @@ class AdminApp extends React.Component {
         <CenterRow>
           <InternalWarning />
           <Logo />
+
+
+          { eventsData.map((e, i) => (
+            <AdminEventRow key={i}>
+              <AdminEventTitle>
+                screening #{e.number}
+              </AdminEventTitle>
+              <AdminEventLinks>
+                <a href={`http://www.animationnights.com/${e.slug}/`}>ANNY page</a>
+                <a href={`/event/${e.number}/`}>vote</a>
+                <a href={`/stats/event/${e.number}/`}>stats</a>
+              </AdminEventLinks>
+            </AdminEventRow>
+          ))}
+
+          <h2>Crawl for scrapable pages</h2>
           {crawling ? (
             <p>
               crawling, this could take a while...
@@ -117,6 +141,9 @@ class AdminApp extends React.Component {
               ))}
             </div>
           )}
+
+
+          <h2>Scrape the auto-crawl pages</h2>
           {scraping ? (
             <p>
               scraping, this could take a while...
@@ -127,19 +154,28 @@ class AdminApp extends React.Component {
             </Submit>
           )}
           { scrapeResults && <p> { JSON.stringify(scrapeResults) } </p> }
+
+
+          <h2>Try to scrape a custom url</h2>
+          {scrapingCustom ? (
+            <p>
+              scraping, this could take a while...
+            </p>
+          ) : (
+            <div>
+              <div>
+                <InputCustomUrl innerRef={ref => this.customScrape = ref} />
+              </div>
+              <br/>
+              <Submit onClick={() => this.scrapeCustomUrl()}>
+                Scrape custom URL
+              </Submit>
+            </div>
+          )}
+          { scrapeCustomResults && <p> { JSON.stringify(scrapeCustomResults) } </p> }
+
+
         </CenterRow>
-        { eventsData.map((e, i) => (
-          <AdminEventRow key={i}>
-            <AdminEventTitle>
-              screening #{e.number}
-            </AdminEventTitle>
-            <AdminEventLinks>
-              <a href={`http://www.animationnights.com/${e.slug}/`}>ANNY page</a>
-              <a href={`/event/${e.number}/`}>vote</a>
-              <a href={`/stats/event/${e.number}/`}>stats</a>
-            </AdminEventLinks>
-          </AdminEventRow>
-        ))}
       </div>
     )
   }

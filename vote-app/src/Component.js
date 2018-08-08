@@ -241,6 +241,10 @@ const AdminEventLinks = styled.div`
   }
 `;
 
+const InputCustomUrl = styled.input`
+  width: 100%;
+`;
+
 export {
   Loading,
   Container,
@@ -264,4 +268,5 @@ export {
   AdminEventRow,
   AdminEventTitle,
   AdminEventLinks,
+  InputCustomUrl,
 }
