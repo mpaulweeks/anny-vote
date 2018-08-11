@@ -1,32 +1,10 @@
 # virtualenv -p python3 venv
 # source venv/bin/activate
+# pip install --upgrade pip
 # pip install -r install/requirements.txt
 
-# pip install --upgrade pip
-# pip install bs4
-# pip install requests[security]
-# pip install peewee
-# pip install flask
-# pip install flask-cors
-
-asn1crypto==0.24.0
-beautifulsoup4==4.6.0
-bs4==0.0.1
-certifi==2018.1.18
-cffi==1.11.5
-chardet==3.0.4
-click==6.7
-cryptography==2.1.4
-Flask==0.12.2
-Flask-Cors==3.0.3
-idna==2.6
-itsdangerous==0.24
-Jinja2==2.10
-MarkupSafe==1.0
-peewee==3.1.5
-pycparser==2.18
-pyOpenSSL==17.5.0
-requests==2.18.4
-six==1.11.0
-urllib3==1.22
-Werkzeug==0.14.1
+requests[security] == 2.19.1
+bs4 == 0.0.1
+peewee == 3.6.4
+Flask == 0.12.2
+Flask-Cors == 3.0.3

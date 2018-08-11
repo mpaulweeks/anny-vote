@@ -100,6 +100,14 @@ def scrape():
     return to_json(result)
 
 
+@app.route('/api/scrape/custom', methods=['POST'])
+def scrape_custom():
+    url = request.get_json()['url']
+    result = store.scrape_and_record_urls([url])
+    EVENT_CACHE.clear()
+    return to_json(result)
+
+
 @app.route('/api/data')
 def get_data():
     all_event_data = store.get_all_event_data()

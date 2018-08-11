@@ -112,6 +112,18 @@ class ScreeningTitle extends React.Component {
   }
 }
 
+class PollTitle extends React.Component {
+  render() {
+    const { event } = this.props;
+    const url = `/event/${event.slug}/`;
+    return (
+      <EventTitle>
+        <a href={url}>Permalink to Poll</a>
+      </EventTitle>
+    );
+  }
+}
+
 const Submit = styled.button`
   font-size: 20px;
   background-color: var(--background);
@@ -185,14 +197,22 @@ const FilmDescription = styled(SubRow)`
   font-size: 16px;
 `;
 
-const InternalWarning = styled.div`
+const InternalWarningDiv = styled.div`
   font-size: 16px;
   font-weight: bold;
-  color: var(--warning);
-  &::after {
-    content: "INTERNAL USE ONLY";
+  & > a {
+    color: var(--warning);
   }
 `;
+class InternalWarning extends React.Component {
+  render() {
+    return (
+      <InternalWarningDiv>
+        <a href="/admin"> INTERNAL USE ONLY </a>
+      </InternalWarningDiv>
+    )
+  }
+}
 
 const AnalyticsTable = styled.table`
   margin: 0px auto;
@@ -221,6 +241,10 @@ const AdminEventLinks = styled.div`
   }
 `;
 
+const InputCustomUrl = styled.input`
+  width: 100%;
+`;
+
 export {
   Loading,
   Container,
@@ -229,8 +253,9 @@ export {
   CenterRow,
   FlexColumnRow,
   Logo,
-  ScreeningTitle,
   EventTitle,
+  ScreeningTitle,
+  PollTitle,
   Submit,
   SaveMessage,
   FilmContainer,
@@ -243,4 +268,5 @@ export {
   AdminEventRow,
   AdminEventTitle,
   AdminEventLinks,
+  InputCustomUrl,
 }

@@ -10,6 +10,7 @@ import {
   AdminEventRow,
   AdminEventTitle,
   AdminEventLinks,
+  InputCustomUrl,
 } from './Component';
 
 
@@ -31,6 +32,8 @@ class AdminApp extends React.Component {
       crawlResults: null,
       scraping: false,
       scrapeResults: null,
+      scrapingCustom: false,
+      scrapeCustomResults: null,
     }
   }
   componentDidMount() {
@@ -78,6 +81,19 @@ class AdminApp extends React.Component {
       });
     });
   }
+  scrapeCustomUrl(){
+    const url = this.scrapeCustomInput.value;
+    this.setState({
+      scrapingCustom: true,
+    }, () => {
+      API.scrapeCustomUrl(url).then(res => {
+        this.setState({
+          scrapingCustom: false,
+          scrapeCustomResults: res,
+        });
+      });
+    });
+  }
   render() {
     const {
       eventsData,
@@ -86,6 +102,8 @@ class AdminApp extends React.Component {
       crawlResults,
       scraping,
       scrapeResults,
+      scrapingCustom,
+      scrapeCustomResults,
     } = this.state;
     if (!eventsData){
       return <Loading></Loading>;
@@ -93,11 +111,55 @@ class AdminApp extends React.Component {
     return (
       <div>
         <CenterRow>
-          <InternalWarning></InternalWarning>
+          <InternalWarning />
           <Logo />
+
+
+          { eventsData.map((e, i) => (
+            <AdminEventRow key={i}>
+              <AdminEventTitle>
+                screening #{e.number}
+              </AdminEventTitle>
+              <AdminEventLinks>
+                <a href={`http://www.animationnights.com/${e.slug}/`}>ANNY page</a>
+                <a href={`/event/${e.number}/`}>vote</a>
+                <a href={`/stats/event/${e.number}/`}>stats</a>
+              </AdminEventLinks>
+            </AdminEventRow>
+          ))}
+
+
+          <h2>Try to scrape a custom url</h2>
+          {scrapingCustom ? (
+            <p>
+              scraping, this should take just a few seconds...
+            </p>
+          ) : (
+            <div>
+              <div>
+                <InputCustomUrl innerRef={ref => this.scrapeCustomInput = ref} />
+              </div>
+              <br/>
+              <Submit onClick={() => this.scrapeCustomUrl()}>
+                Scrape custom URL
+              </Submit>
+            </div>
+          )}
+          { scrapeCustomResults && (
+            <div>
+              <p> Results: </p>
+              <p>{ JSON.stringify(scrapeCustomResults) }</p>
+              { scrapeCustomResults.length > 0 && (
+                <p> Refresh the page! </p>
+              )}
+            </div>
+          )}
+
+
+          <h2>Crawl for scrape-able pages</h2>
           {crawling ? (
             <p>
-              crawling, this could take a while...
+              crawling, this should take just a few seconds...
             </p>
           ) : (
             <Submit onClick={() => this.crawl()}>
@@ -117,29 +179,30 @@ class AdminApp extends React.Component {
               ))}
             </div>
           )}
+
+
+          <h2>Auto-Scrape all pages via crawl</h2>
           {scraping ? (
             <p>
-              scraping, this could take a while...
+              scraping, this could take a over a minute...
             </p>
           ) : (
             <Submit onClick={() => this.scrape()}>
-              Scrape for new events
+              Auto-Scrape for new events
             </Submit>
           )}
-          { scrapeResults && <p> { JSON.stringify(scrapeResults) } </p> }
+          { scrapeResults && (
+            <div>
+              <p> Results: </p>
+              <p>{ JSON.stringify(scrapeResults) }</p>
+              { scrapeResults.length > 0 && (
+                <p> Refresh the page! </p>
+              )}
+            </div>
+          )}
+
+
         </CenterRow>
-        { eventsData.map((e, i) => (
-          <AdminEventRow key={i}>
-            <AdminEventTitle>
-              screening #{e.number}
-            </AdminEventTitle>
-            <AdminEventLinks>
-              <a href={`http://www.animationnights.com/${e.slug}/`}>ANNY page</a>
-              <a href={`/event/${e.number}/`}>vote</a>
-              <a href={`/stats/event/${e.number}/`}>stats</a>
-            </AdminEventLinks>
-          </AdminEventRow>
-        ))}
       </div>
     )
   }
