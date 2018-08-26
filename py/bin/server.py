@@ -110,7 +110,7 @@ def scrape_custom():
 
 @app.route('/api/data')
 def get_data():
-    all_event_data = store.get_all_event_data()
+    all_event_data = store.get_all_event_votes_data()
     return to_json(all_event_data)
 
 

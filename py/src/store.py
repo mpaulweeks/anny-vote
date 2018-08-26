@@ -132,3 +132,10 @@ def get_all_event_data():
             'films': [f.to_dict() for f in s_films if f.event.id == e.id],
         })
     return data
+
+
+def get_all_event_votes_data():
+    events_data = get_all_event_data()
+    for event_data in events_data:
+        event_data['votes'] = get_votes_by_event(event_data['event']['id'])
+    return events_data

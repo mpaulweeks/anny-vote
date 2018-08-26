@@ -53,3 +53,14 @@ prod
 - calculating correlation
   - most related yes and no
   - least related for yes and no
+- mirror low-res of the images
+- export data to google sheet
+
+## migration checklist
+
+- duplicate existing data in cloud db
+  - possibly migrate to NoSQL
+  - deploy to ec2
+- migrate server architecture to lambda
+  - ensure local dev still works
+- make the
