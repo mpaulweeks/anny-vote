@@ -47,7 +47,7 @@ function fetchUrlEvent(){
     return fetchEvent(number);
   } else {
     // todo temporary
-    return fetchEvent('screening37');
+    return fetchEvent(37);
     // return fetchLatestEvent();
   }
 }
