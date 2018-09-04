@@ -70,7 +70,8 @@ class Film(BaseModel):
 
     def is_anny(self):
         return (
-            self.name.lower().startswith('animation nights new york')
+            self.name.lower().startswith('animation nights new york') or
+            self.name.lower().startswith('2018 anny best of fest')
         )
 
     def hide(self):
