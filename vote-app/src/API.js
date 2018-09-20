@@ -46,9 +46,7 @@ function fetchUrlEvent(){
     const number = path.split('/event/')[1].split('/')[0];
     return fetchEvent(number);
   } else {
-    // todo temporary
-    return fetchEvent(37);
-    // return fetchLatestEvent();
+    return fetchLatestEvent();
   }
 }
 
